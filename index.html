@@ -192,12 +192,12 @@ code,.mono{font-family:"JetBrains Mono",ui-monospace,monospace;}
 
 .codeblock{
   margin-top:14px;background:var(--code-bg);border:1px solid var(--code-border);border-radius:10px;
-  padding:12px 14px;overflow-x:auto;position:relative;
+  padding:12px 14px;position:relative;display:flex;flex-direction:column;gap:8px;
 }
-.codeblock .formula{font-family:"JetBrains Mono";font-size:13.5px;white-space:pre;line-height:1.6;}
-.codeblock .note{margin-top:8px;font-size:12.5px;color:var(--ink-muted);border-top:1px dashed var(--border);padding-top:8px;}
+.codeblock .formula{font-family:"JetBrains Mono";font-size:13.5px;white-space:pre;line-height:1.6;overflow-x:auto;}
+.codeblock .note{font-size:12.5px;color:var(--ink-muted);border-top:1px dashed var(--border);padding-top:8px;}
 .copy-btn{
-  position:absolute;top:8px;right:8px;background:var(--surface);border:1px solid var(--border);
+  align-self:flex-end;flex:none;background:var(--surface);border:1px solid var(--border);
   border-radius:6px;font-size:11px;padding:4px 8px;color:var(--ink-muted);cursor:pointer;font-family:inherit;
 }
 .copy-btn:hover{color:var(--accent-ink);border-color:var(--accent-soft-strong);}
@@ -312,8 +312,10 @@ table.ref tr:last-child td{border-bottom:none;}
 
 .prompt-block{
   margin-top:14px;background:var(--code-bg);border:1px solid var(--code-border);border-radius:10px;
-  padding:18px 20px;position:relative;white-space:pre-wrap;font-size:13.6px;line-height:1.95;color:var(--ink);
+  padding:16px 18px;position:relative;font-size:13.6px;line-height:1.95;color:var(--ink);
+  display:flex;flex-direction:column;gap:10px;
 }
+.prompt-block .prompt-text{white-space:pre-wrap;}
 .prompt-block .ph{
   background:var(--accent-soft);color:var(--accent-ink);border-radius:4px;padding:0 4px;font-weight:700;
   box-shadow:0 0 0 1px var(--accent-soft-strong);
@@ -1092,9 +1094,9 @@ const AI_PROMPT_TEMPLATES = [
 ・右・下にも関数コピーをする
 
 ＜条件＞
-1．｛ A2 ｝=｛ 「シート名」シートのA2:A ｝で｛ 完全・前方・後方 ｝一致
-2．｛ B2 ｝=｛ 「シート名」シートのB2:B ｝のデータを探し｛「シート名」シートのC2:C｝を表示
-3．｛ その他の条件があれば記入 ｝
+1．｛A2｝=｛「シート名」シートのA2:A｝で｛完全・前方・後方｝一致
+2．｛B2｝=｛「シート名」シートのB2:B｝のデータを探し｛「シート名」シートのC2:C｝を表示
+3．｛その他の条件があれば記入｝
 
 ＜出力形式＞
 関数（改行なし）
@@ -1103,9 +1105,8 @@ const AI_PROMPT_TEMPLATES = [
 できない場合は、できないと教えてください。
 また選んだ関数にした理由、またこの関数のメリットデメリットも教えてください。`},
  {title:"関数入力後にエラーが出た時のテンプレート",
-  body:`※関数入力しエラーが出た場合
-｛ エラー全文をコピペし貼付 ｝
-｛ 入力した関数 ｝を入力したら上記エラーが出ております。修正してください。`},
+  body:`｛エラー全文をコピペし貼付｝
+｛入力した関数｝を入力したら上記エラーが出ております。修正してください。`},
 ];
 
 /* =========================================================
@@ -1369,18 +1370,18 @@ function renderAiPrompt(){
   return `<div class="page-head">
     <div class="eyebrow"><span class="dot"></span>実践ガイド</div>
     <h1 class="page-title">【AIに関数を質問する時の例文】</h1>
-    <div class="page-desc">ChatGPTやClaudeなどのAIに関数について質問するときに、そのままコピーして使えるテンプレートです。<span class="ph" style="display:inline;">｛　｝</span>の部分が入力箇所です。「コピー」ボタンを押すとこの中身が空になった状態でコピーされるので、貼り付けた後にそのまま書き込めます。</div>
+    <div class="page-desc">ChatGPTやClaudeなどのAIに関数について質問するときに、そのままコピーして使えるテンプレートです。<span class="ph" style="display:inline;">｛｝</span>の部分が入力箇所です。「コピー」ボタンを押すとこの中身が空になった状態でコピーされるので、貼り付けた後にそのまま書き込めます。</div>
   </div>
   ${AI_PROMPT_TEMPLATES.map(t=>`<div class="section-block">
     <h3><span class="bar"></span>${esc(t.title)}</h3>
     <div class="prompt-block">
       <button class="copy-btn" data-copy="${esc(stripPlaceholders(t.body))}">コピー</button>
-      ${renderPromptBody(t.body)}
+      <div class="prompt-text">${renderPromptBody(t.body)}</div>
     </div>
   </div>`).join("")}
   <div class="callout">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17v.01M12 8v5M12 3l9 16H3z"/></svg>
-    <div>コピーした文章をAIに貼り付けたら、空になった｛　｝の部分をクリックして自分のデータに合わせて書き込んでから送信してください。「＜条件＞」の項目は、必要な分だけ増やしたり減らしたりしても構いません。</div>
+    <div>コピーした文章をAIに貼り付けたら、空になった｛｝の部分をクリックして自分のデータに合わせて書き込んでから送信してください。「＜条件＞」の項目は、必要な分だけ増やしたり減らしたりしても構いません。</div>
   </div>`;
 }
 
