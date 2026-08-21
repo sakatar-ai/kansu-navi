@@ -545,6 +545,21 @@ const FUNCTIONS = [
  usage:{purpose:"文字抽出",scenario:["名前分割","コード整形"],
    merit:["シンプル","軽い"],demerit:["柔軟性低め"],bigdata:"◎"}},
 
+{id:"concat",cat:"text",name:"CONCAT",sheetsOnly:false,
+ syntax:"CONCAT(文字列1, 文字列2, …) ／ CONCAT(範囲)",
+ oneliner:"複数の文字列やセルを1つに結合する",
+ formula:`=CONCAT(A2,B2)`,
+ formulaNote:"A2とB2の文字列をそのまま連結する（例：「山田」＋「太郎」→「山田太郎」）",
+ mechanism:"指定した複数の文字列やセルの値を、区切り文字を挟まずそのまま1つの文字列にまとめる。",
+ points:["範囲（A2:A10など）を指定してまとめて連結することもできる","「&」演算子（=A2&B2）とほぼ同じ結果になる","古いCONCATENATE関数の後継にあたる関数"],
+ cautions:["区切り文字（「、」など）を指定できない。区切り文字を入れたい場合はTEXTJOINを使う","空白セルもそのまま詰めて結合されるため、間に何も入らない点に注意"],
+ usage:{purpose:"文字列の結合",scenario:["姓と名を1つのセルにまとめる","コードと連番を連結して管理番号を作る"],
+   merit:["書き方がシンプル","範囲指定にも対応"],demerit:["区切り文字を入れられない","TEXTJOINほど柔軟ではない"],bigdata:"◎"},
+ extra:{title:"似た関数との使い分け",examples:[
+   {formula:`=A2&B2`,desc:"「&」演算子でも同じ結果になる（=CONCAT(A2,B2)と同義）。数式が短いときは&の方が書きやすい"},
+   {formula:`=TEXTJOIN("・",TRUE,A2:A5)`,desc:"区切り文字を入れたい、空白セルを無視したい場合はCONCATではなくTEXTJOINを使う"},
+ ]}},
+
 {id:"regexextract",cat:"text",name:"REGEXEXTRACT",sheetsOnly:true,
  syntax:"REGEXEXTRACT(文字列, 正規表現)",
  oneliner:"正規表現でパターン抽出",
@@ -810,7 +825,6 @@ const FUNCTIONS = [
 // あると便利な関数（handyカテゴリ：カード形式は簡易に）
 const HANDY_TIPS = [
  {name:"TEXTJOIN",formula:`=TEXTJOIN("、",TRUE,E2:E4)`,desc:"区切り文字を指定して複数セルを1つに結合。空白セルは無視できる",use:"備考欄の情報をまとめる、姓名や住所の結合"},
- {name:"CONCAT",formula:`=CONCAT(A2,B2)`,desc:"複数の文字列やセルを1つに結合する。TEXTJOINと違い区切り文字や空白セルの無視は指定できないシンプル版",use:"姓と名を1つのセルにまとめる、コードと連番を連結して管理番号を作る"},
  {name:"TRIM",formula:`=TRIM(E2)`,desc:"文字列の前後・連続する余分なスペースを削除",use:"コピペしたデータの整形、検索一致率のアップ"},
  {name:"CLEAN",formula:`=CLEAN(E2)`,desc:"改行や制御文字（目に見えないゴミ）を除去",use:"他システムからコピペしたデータのクレンジング"},
  {name:"SUBSTITUTE",formula:`=SUBSTITUTE(E2,"-","")`,desc:"指定した文字列を別の文字列に置換",use:"電話番号のハイフン統一、表記ゆれの修正"},
