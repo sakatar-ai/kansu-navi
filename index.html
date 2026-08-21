@@ -810,6 +810,7 @@ const FUNCTIONS = [
 // あると便利な関数（handyカテゴリ：カード形式は簡易に）
 const HANDY_TIPS = [
  {name:"TEXTJOIN",formula:`=TEXTJOIN("、",TRUE,E2:E4)`,desc:"区切り文字を指定して複数セルを1つに結合。空白セルは無視できる",use:"備考欄の情報をまとめる、姓名や住所の結合"},
+ {name:"CONCAT",formula:`=CONCAT(A2,B2)`,desc:"複数の文字列やセルを1つに結合する。TEXTJOINと違い区切り文字や空白セルの無視は指定できないシンプル版",use:"姓と名を1つのセルにまとめる、コードと連番を連結して管理番号を作る"},
  {name:"TRIM",formula:`=TRIM(E2)`,desc:"文字列の前後・連続する余分なスペースを削除",use:"コピペしたデータの整形、検索一致率のアップ"},
  {name:"CLEAN",formula:`=CLEAN(E2)`,desc:"改行や制御文字（目に見えないゴミ）を除去",use:"他システムからコピペしたデータのクレンジング"},
  {name:"SUBSTITUTE",formula:`=SUBSTITUTE(E2,"-","")`,desc:"指定した文字列を別の文字列に置換",use:"電話番号のハイフン統一、表記ゆれの修正"},
