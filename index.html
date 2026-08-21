@@ -1,0 +1,1561 @@
+<title>関数ナビ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f6f9;
+  --bg-soft:#eceff3;
+  --surface:#ffffff;
+  --surface-2:#f0f2f6;
+  --border:#dde1e8;
+  --border-strong:#c7cdd7;
+  --ink:#1b222c;
+  --ink-muted:#5b6472;
+  --ink-faint:#8992a0;
+  --accent:#1f6f78;
+  --accent-ink:#0f4a50;
+  --accent-soft:#e3f0f0;
+  --accent-soft-strong:#cbe4e3;
+  --code-bg:#f7f8fb;
+  --code-border:#e1e5ec;
+  --code-fn:#a8571e;
+  --code-ref:#2f6fa5;
+  --code-str:#3e7d4b;
+  --code-num:#7a4fa0;
+  --code-punc:#8992a0;
+  --tag-sheets-bg:#efe8f7;
+  --tag-sheets-ink:#6a4fa0;
+  --tag-excel-bg:#e7f1e9;
+  --tag-excel-ink:#2f7a45;
+  --good:#2f7a45;
+  --warn:#b5791a;
+  --bad:#b23b3b;
+  --shadow: 0 1px 2px rgba(20,30,40,.04), 0 8px 24px -12px rgba(20,30,40,.10);
+  --radius: 14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#11151b;
+    --bg-soft:#171c23;
+    --surface:#1a2028;
+    --surface-2:#212832;
+    --border:#2c3440;
+    --border-strong:#3a4451;
+    --ink:#e7eaef;
+    --ink-muted:#a3adba;
+    --ink-faint:#6c7684;
+    --accent:#59bcc4;
+    --accent-ink:#bfeef0;
+    --accent-soft:#173539;
+    --accent-soft-strong:#1f4548;
+    --code-bg:#161b22;
+    --code-border:#2a323d;
+    --code-fn:#e0a868;
+    --code-ref:#7fb0e0;
+    --code-str:#8fcb9b;
+    --code-num:#b79ce0;
+    --code-punc:#788191;
+    --tag-sheets-bg:#2a2338;
+    --tag-sheets-ink:#c4aeee;
+    --tag-excel-bg:#1d2c22;
+    --tag-excel-ink:#7fce97;
+    --good:#6fbf86;
+    --warn:#d9a949;
+    --bad:#e08080;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 32px -16px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#11151b;
+  --bg-soft:#171c23;
+  --surface:#1a2028;
+  --surface-2:#212832;
+  --border:#2c3440;
+  --border-strong:#3a4451;
+  --ink:#e7eaef;
+  --ink-muted:#a3adba;
+  --ink-faint:#6c7684;
+  --accent:#59bcc4;
+  --accent-ink:#bfeef0;
+  --accent-soft:#173539;
+  --accent-soft-strong:#1f4548;
+  --code-bg:#161b22;
+  --code-border:#2a323d;
+  --code-fn:#e0a868;
+  --code-ref:#7fb0e0;
+  --code-str:#8fcb9b;
+  --code-num:#b79ce0;
+  --code-punc:#788191;
+  --tag-sheets-bg:#2a2338;
+  --tag-sheets-ink:#c4aeee;
+  --tag-excel-bg:#1d2c22;
+  --tag-excel-ink:#7fce97;
+  --good:#6fbf86;
+  --warn:#d9a949;
+  --bad:#e08080;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 32px -16px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",sans-serif;
+  font-size:15px;
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:"Zen Maru Gothic","Zen Kaku Gothic New",sans-serif;text-wrap:balance;margin:0;}
+a{color:inherit;}
+code,.mono{font-family:"JetBrains Mono",ui-monospace,monospace;}
+::selection{background:var(--accent-soft-strong);}
+
+.app{display:flex;min-height:100vh;}
+
+/* ---------- Sidebar ---------- */
+.sidebar{
+  width:288px;flex:none;
+  background:var(--bg-soft);
+  border-right:1px solid var(--border);
+  padding:22px 16px 24px;
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  display:flex;flex-direction:column;gap:18px;
+}
+.brand{display:flex;align-items:baseline;gap:10px;padding:0 4px;}
+.brand .mark{
+  font-family:"Zen Maru Gothic";font-weight:900;font-size:22px;color:var(--accent-ink);
+  background:var(--accent-soft);border:1px solid var(--accent-soft-strong);
+  width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:none;
+}
+.brand .name{font-family:"Zen Maru Gothic";font-weight:700;font-size:19px;letter-spacing:.02em;}
+.brand .sub{font-size:11px;color:var(--ink-faint);margin-top:1px;}
+
+.theme-toggle{display:flex;gap:3px;background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:3px;}
+.theme-toggle button{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 8px;border-radius:8px;
+  border:none;background:none;color:var(--ink-muted);font-size:12px;font-family:inherit;font-weight:500;cursor:pointer;
+}
+.theme-toggle button svg{width:14px;height:14px;stroke-width:2;flex:none;}
+.theme-toggle button:hover{color:var(--ink);}
+.theme-toggle button.active{background:var(--surface);color:var(--ink);box-shadow:var(--shadow);font-weight:700;}
+.theme-toggle button:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+
+.searchbox{position:relative;}
+.searchbox input{
+  width:100%;padding:11px 14px 11px 38px;border-radius:10px;border:1px solid var(--border-strong);
+  background:var(--surface);color:var(--ink);font-size:14px;font-family:inherit;
+}
+.searchbox input:focus{outline:2px solid var(--accent);outline-offset:1px;}
+.searchbox svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--ink-faint);}
+.search-meta{font-size:11.5px;color:var(--ink-faint);padding:2px 4px;min-height:14px;}
+
+.navgroup{display:flex;flex-direction:column;gap:2px;}
+.navgroup-label{font-size:11px;color:var(--ink-faint);letter-spacing:.08em;padding:10px 8px 4px;font-weight:700;}
+.navitem{
+  display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:9px;cursor:pointer;
+  color:var(--ink-muted);font-size:13.5px;font-weight:500;border:1px solid transparent;
+  width:100%;text-align:left;background:none;font-family:inherit;
+}
+.navitem:hover{background:var(--surface-2);color:var(--ink);}
+.navitem:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+.navitem.active{background:var(--accent-soft);color:var(--accent-ink);border-color:var(--accent-soft-strong);font-weight:700;}
+.navitem .ico{width:17px;height:17px;flex:none;stroke:currentColor;}
+.navitem .cnt{margin-left:auto;font-family:"JetBrains Mono";font-size:11px;color:var(--ink-faint);}
+.navitem.active .cnt{color:var(--accent-ink);}
+
+.sidebar-foot{margin-top:auto;font-size:11px;color:var(--ink-faint);padding:8px 4px 0;border-top:1px solid var(--border);padding-top:12px;}
+
+/* ---------- Main ---------- */
+.main{flex:1;min-width:0;padding:34px 40px 80px;max-width:1180px;}
+.page-head{margin-bottom:26px;}
+.eyebrow{font-size:12px;font-weight:700;color:var(--accent-ink);letter-spacing:.08em;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);}
+.page-title{font-size:27px;font-weight:700;}
+.page-desc{color:var(--ink-muted);margin-top:8px;font-size:14px;max-width:70ch;}
+
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;letter-spacing:.02em;}
+.badge-sheets{background:var(--tag-sheets-bg);color:var(--tag-sheets-ink);}
+.badge-excel{background:var(--tag-excel-bg);color:var(--tag-excel-ink);}
+.badge-cat{background:var(--surface-2);color:var(--ink-muted);border:1px solid var(--border);}
+
+/* function cards */
+.fn-grid{display:flex;flex-direction:column;gap:16px;}
+.fn-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:20px 22px 22px;box-shadow:var(--shadow);scroll-margin-top:20px;
+}
+.fn-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;}
+.fn-name{font-family:"JetBrains Mono";font-size:18px;font-weight:600;color:var(--ink);}
+.fn-oneliner{font-size:13.5px;color:var(--ink-muted);margin-top:3px;}
+.fn-badges{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;}
+
+.codeblock{
+  margin-top:14px;background:var(--code-bg);border:1px solid var(--code-border);border-radius:10px;
+  padding:12px 14px;overflow-x:auto;position:relative;
+}
+.codeblock .formula{font-family:"JetBrains Mono";font-size:13.5px;white-space:pre;line-height:1.6;}
+.codeblock .note{margin-top:8px;font-size:12.5px;color:var(--ink-muted);border-top:1px dashed var(--border);padding-top:8px;}
+.copy-btn{
+  position:absolute;top:8px;right:8px;background:var(--surface);border:1px solid var(--border);
+  border-radius:6px;font-size:11px;padding:4px 8px;color:var(--ink-muted);cursor:pointer;font-family:inherit;
+}
+.copy-btn:hover{color:var(--accent-ink);border-color:var(--accent-soft-strong);}
+.copy-btn:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+.searchbox input:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+.cf{color:var(--code-fn);} .cr{color:var(--code-ref);} .cs{color:var(--code-str);} .cn{color:var(--code-num);} .cp{color:var(--code-punc);}
+
+.fn-body{display:grid;grid-template-columns:1.5fr 1fr;gap:20px;margin-top:16px;}
+@media (max-width:760px){.fn-body{grid-template-columns:1fr;}}
+.fn-main-col{display:flex;flex-direction:column;gap:14px;min-width:0;}
+.fn-side-col{display:flex;flex-direction:column;gap:10px;min-width:0;}
+
+.field-label{font-size:11px;font-weight:700;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:5px;display:flex;align-items:center;gap:6px;}
+.field-label .bar{width:3px;height:11px;border-radius:2px;background:var(--accent);}
+.field-body{font-size:13.5px;color:var(--ink);}
+ul.bullets{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:5px;}
+ul.bullets li{padding-left:14px;position:relative;font-size:13.2px;color:var(--ink);}
+ul.bullets li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--border-strong);}
+.cautions li::before{background:var(--warn);}
+
+.usage-box{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:12.8px;}
+.usage-row{display:flex;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);}
+.usage-row:last-child{border-bottom:none;}
+.usage-row .k{flex:none;width:64px;color:var(--ink-faint);font-weight:700;font-size:11px;padding-top:1px;}
+.usage-row .v{flex:1;color:var(--ink);}
+.usage-row .v ul{margin:0;padding-left:16px;}
+.meter{display:flex;gap:3px;margin-top:2px;}
+.meter i{width:14px;height:6px;border-radius:3px;background:var(--border-strong);}
+.meter i.on{background:var(--accent);}
+.meter-label{font-size:11px;color:var(--ink-muted);margin-left:6px;}
+
+/* comparison table */
+.tablewrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px;background:var(--surface);box-shadow:var(--shadow);}
+table.cmp{width:100%;border-collapse:collapse;font-size:13px;min-width:640px;}
+table.cmp th,table.cmp td{padding:9px 12px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap;}
+table.cmp th{background:var(--surface-2);font-size:11.5px;color:var(--ink-muted);font-weight:700;position:sticky;top:0;}
+table.cmp td.rank{font-weight:700;text-align:center;}
+table.cmp tr:last-child td{border-bottom:none;}
+table.cmp td.rowh{font-weight:700;color:var(--ink);white-space:normal;}
+
+/* generic reference tables */
+table.ref{width:100%;border-collapse:collapse;font-size:13.3px;}
+table.ref th,table.ref td{padding:9px 12px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top;}
+table.ref th{background:var(--surface-2);font-size:11.5px;color:var(--ink-muted);font-weight:700;}
+table.ref tr:last-child td{border-bottom:none;}
+.kbd{font-family:"JetBrains Mono";background:var(--surface-2);border:1px solid var(--border);border-radius:6px;padding:2px 7px;font-size:12px;}
+
+.section-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;box-shadow:var(--shadow);margin-bottom:18px;}
+.section-block h3{font-size:15px;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.section-block h3 .bar{width:4px;height:14px;border-radius:2px;background:var(--accent);}
+
+.tip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;}
+.tip-card{border:1px solid var(--border);border-radius:11px;padding:13px 15px;background:var(--surface);}
+.tip-card .tip-name{font-family:"JetBrains Mono";font-weight:600;font-size:14px;color:var(--accent-ink);}
+.tip-card .tip-formula{font-family:"JetBrains Mono";font-size:12px;color:var(--ink-muted);margin-top:4px;word-break:break-all;}
+.tip-card .tip-desc{font-size:12.8px;margin-top:6px;}
+.tip-card .tip-use{font-size:11.8px;color:var(--ink-muted);margin-top:6px;border-top:1px dashed var(--border);padding-top:6px;}
+
+.feature-list{display:flex;flex-direction:column;gap:10px;}
+.feature-row{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+.feature-row:last-child{border-bottom:none;}
+
+.step-list{display:flex;flex-direction:column;gap:16px;}
+.step-item{display:flex;gap:14px;align-items:flex-start;}
+.step-item .stepnum{
+  flex:none;width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--surface);
+  display:flex;align-items:center;justify-content:center;font-family:"Zen Maru Gothic";font-weight:700;font-size:14px;margin-top:1px;
+}
+.step-item .stepbody{padding-top:2px;min-width:0;}
+.step-item .stepbody .stitle{font-weight:700;font-size:14px;margin-bottom:3px;}
+.step-item .stepbody .sdesc{font-size:13.3px;color:var(--ink-muted);}
+.step-item .stepbody code{background:var(--code-bg);border:1px solid var(--code-border);border-radius:5px;padding:1px 6px;font-size:12.5px;color:var(--code-fn);}
+
+.glossary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;}
+.glossary-card{border:1px solid var(--border);border-radius:10px;padding:12px 14px;background:var(--surface);}
+.glossary-card .gterm{font-weight:700;font-size:13.8px;color:var(--accent-ink);}
+.glossary-card .gdesc{font-size:12.6px;color:var(--ink-muted);margin-top:4px;}
+
+.callout{
+  display:flex;gap:10px;background:var(--accent-soft);border:1px solid var(--accent-soft-strong);
+  border-radius:10px;padding:13px 15px;font-size:13.2px;color:var(--ink);align-items:flex-start;
+}
+.callout svg{flex:none;width:18px;height:18px;color:var(--accent-ink);margin-top:1px;}
+.callout b{color:var(--accent-ink);}
+
+.errtable td.errcode{font-family:"JetBrains Mono";font-weight:700;color:var(--bad);white-space:nowrap;}
+.feature-row .fname{flex:none;width:150px;font-weight:700;font-size:13px;}
+.feature-row .fdesc{flex:1;font-size:13px;color:var(--ink-muted);}
+
+.applied-card{border:1px solid var(--border);border-radius:12px;padding:18px 20px;background:var(--surface);box-shadow:var(--shadow);margin-bottom:16px;}
+.applied-title{font-weight:700;font-size:15px;margin-bottom:10px;display:flex;gap:8px;align-items:baseline;}
+.applied-title .num{font-family:"JetBrains Mono";color:var(--accent-ink);background:var(--accent-soft);border-radius:6px;padding:1px 8px;font-size:12px;}
+.legend{display:flex;flex-direction:column;gap:6px;margin-top:12px;}
+.legend-item{display:flex;gap:10px;font-size:12.8px;align-items:flex-start;}
+.legend-item .term{flex:none;font-family:"JetBrains Mono";font-weight:600;color:var(--code-fn);background:var(--code-bg);border:1px solid var(--code-border);border-radius:6px;padding:1px 7px;white-space:nowrap;}
+.legend-item .exp{color:var(--ink-muted);padding-top:1px;}
+.applied-desc{font-size:13.3px;color:var(--ink-muted);margin-top:6px;}
+
+.toast{
+  position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(8px);
+  background:var(--ink);color:var(--bg);font-size:13px;padding:9px 18px;border-radius:999px;
+  opacity:0;transition:opacity .18s,transform .18s;pointer-events:none;z-index:50;box-shadow:var(--shadow);
+}
+:root[data-theme="dark"] .toast, @media (prefers-color-scheme: dark){ .toast{} }
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+.empty-state{text-align:center;padding:60px 20px;color:var(--ink-faint);}
+.empty-state svg{width:40px;height:40px;margin-bottom:10px;opacity:.6;}
+
+.compat-flow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px;margin:4px 0 14px;color:var(--ink-muted);}
+.compat-flow .pill{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:4px 10px;font-family:"JetBrains Mono";font-size:12px;}
+
+@media (max-width:880px){
+  .sidebar{position:fixed;z-index:40;left:0;top:0;transform:translateX(-100%);transition:transform .2s;box-shadow:var(--shadow);}
+  .sidebar.open{transform:translateX(0);}
+  .main{padding:20px 18px 80px;}
+  .menu-btn{display:flex;}
+}
+.menu-btn{display:none;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:9px 12px;margin-bottom:14px;font-size:13px;color:var(--ink);cursor:pointer;}
+.backdrop{display:none;}
+.backdrop.show{display:block;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:30;}
+</style>
+
+<div class="app">
+  <div class="backdrop" id="backdrop"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="mark">Σ</div>
+      <div>
+        <div class="name">関数ナビ</div>
+        <div class="sub">スプレッドシート関数・実務マニュアル</div>
+      </div>
+    </div>
+    <div class="theme-toggle" role="group" aria-label="表示テーマ">
+      <button type="button" id="themeLightBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>ライト</button>
+      <button type="button" id="themeDarkBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 14.5A8.5 8.5 0 119.5 4a7 7 0 0010.5 10.5z"/></svg>ダーク</button>
+    </div>
+    <div class="searchbox">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="searchInput" type="text" placeholder="関数名・キーワードで検索" autocomplete="off">
+    </div>
+    <div class="search-meta" id="searchMeta"></div>
+    <nav id="navRoot" style="display:flex;flex-direction:column;gap:14px;overflow-y:auto;"></nav>
+    <div class="sidebar-foot" id="sidebarFoot">元データ：関数.xlsx を移植</div>
+  </aside>
+
+  <main class="main">
+    <button class="menu-btn" id="menuBtn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      メニュー
+    </button>
+    <div id="content"></div>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   DATA
+   ========================================================= */
+const CATEGORY_META = [
+  {id:"guide",    label:"はじめての方へ",     group:"はじめに"},
+  {id:"search",   label:"データ検索・抽出系", group:"関数リファレンス"},
+  {id:"agg",      label:"集計系",             group:"関数リファレンス"},
+  {id:"text",     label:"文字処理系",         group:"関数リファレンス"},
+  {id:"cond",     label:"条件分岐・エラー処理系", group:"関数リファレンス"},
+  {id:"array",    label:"配列・自動化・外部連携系", group:"関数リファレンス"},
+  {id:"date",     label:"日付関連",           group:"関数リファレンス"},
+  {id:"phone",    label:"電話番号処理",       group:"関数リファレンス"},
+  {id:"handy",    label:"あると便利な関数",   group:"関数リファレンス"},
+  {id:"applied",  label:"★応用編（組み合わせ実例）", group:"実践ガイド"},
+  {id:"callcenter", label:"コールセンターKPI分析", group:"実践ガイド"},
+  {id:"excel",    label:"Excel使用時の注意点", group:"実践ガイド"},
+  {id:"regex",    label:"正規表現 早見表",     group:"参考資料"},
+  {id:"shortcut", label:"ショートカットキー", group:"参考資料"},
+  {id:"command",  label:"PC高速化コマンド",   group:"参考資料"},
+];
+
+// meterレベル: ◎4 / ○3 / △2 / ×1
+function meterLevel(sym){
+  if(sym.startsWith("◎"))return 4;
+  if(sym.startsWith("○"))return 3;
+  if(sym.startsWith("△"))return 2;
+  if(sym.startsWith("×"))return 1;
+  return 2;
+}
+
+const FUNCTIONS = [
+// ---------------- 検索・抽出系 ----------------
+{id:"filter",cat:"search",name:"FILTER",sheetsOnly:true,
+ syntax:"FILTER(範囲, 条件1, [条件2…])",
+ oneliner:"条件に合う行をすべて抽出",
+ formula:`FILTER(A:C, B:B="自社")`,
+ formulaNote:"範囲（A:C）から、条件（B:B=\"自社\"）を満たす行だけをそのままの形で配列として返す",
+ mechanism:"範囲（A:C）から、条件（B:B=\"自社\"）を満たす行だけをそのままの形で配列として返す。",
+ points:["条件は複数指定可能（掛け算でAND）","一致したデータがそのまま一覧で出る"],
+ cautions:["該当なしでエラー → IFERRORで対処","全列参照は重い","データ量が多いと遅くなる"],
+ usage:{purpose:"条件に合うデータだけ抽出",scenario:["条件に一致する行を一覧で取り出す","レポート用データ作成"],
+   merit:["条件に合うデータをまとめて取得できる","柔軟（複数条件OK）"],demerit:["該当なしでエラー（IFERRORで対処）","重くなりやすい"],bigdata:"△（やや重い）"}},
+
+{id:"index-filter",cat:"search",name:"INDEX + FILTER",sheetsOnly:true,
+ syntax:"INDEX(FILTER(範囲, 条件), 行番号, [列番号])",
+ oneliner:"条件に合うデータの先頭1件を取得",
+ formula:`INDEX(FILTER(A2:A100, B2:B100="営業"), 1)`,
+ formulaNote:"B列が「営業」のデータを抽出し、その先頭1件を取得する",
+ mechanism:"まずFILTERで条件に一致するデータを一覧取得し、その結果に対してINDEXで指定行を取り出す。",
+ points:["FILTERの複数件結果から1件だけ取得できる","VLOOKUPでは難しい複数条件検索にも対応可能","先頭一致データ取得によく使われる","XLOOKUPが使えない環境の代替にもなる","FILTER単体より結果を1セルに収めやすい"],
+ cautions:["該当データがないとエラーになる","重複データがあっても先頭データのみ取得","INDEXの行番号指定を誤るとエラー","FILTER結果が大きいと処理が重くなる","通常はIFERRORと併用する"],
+ usage:{purpose:"条件検索後の単一データ取得",scenario:["商品名から価格取得","社員番号から部署取得","マスタ検索","複数条件検索","VLOOKUP代替"],
+   merit:["複数条件検索が簡単","列の順番に制約がない","左方向検索も可能","可読性が高い","柔軟性が高い"],
+   demerit:["大量データでは負荷が高め","MATCH系より遅い場合がある","重複データ制御が苦手","該当なし時のエラー処理が必要"],
+   bigdata:"○（数千行程度なら十分実用的。数万行になるとINDEX+MATCHが有利な場合あり。全列参照は避け範囲限定推奨）"},
+ extra:{title:"実務での実例",examples:[{formula:`=IFERROR(INDEX(FILTER('データ'!S:S,'データ'!$B:$B=$B3),1),"")`,desc:"「データ」シートのB列とB3が一致する時の、「データ」S列を取得"}]}},
+
+{id:"index-match",cat:"search",name:"INDEX + MATCH",sheetsOnly:false,
+ syntax:"INDEX(取得範囲, MATCH(検索値, 検索範囲, 0))",
+ oneliner:"検索して値を取得（左方向検索も可）",
+ formula:`INDEX(A:A, MATCH("田中", B:B, 0))`,
+ formulaNote:"① MATCHで「田中」がB列の何行目かを探す（例：5行目）→ ② INDEXでA列の5行目を取得",
+ mechanism:"① MATCHで「田中」がB列の何行目かを探す → ② INDEXでA列の該当行を取得する。",
+ points:["左方向検索が可能（VLOOKUPの弱点を解消）","「列番号」ではなく「範囲」で指定できる"],
+ cautions:["MATCHは完全一致なら「0」","重複がある場合は最初の1件のみ"],
+ usage:{purpose:"条件に合うデータだけ抽出",scenario:["VLOOKUPの代替","柔軟な検索"],
+   merit:["列の制約がない（左検索OK）","比較的軽い"],demerit:["式がやや複雑"],bigdata:"◎（安定）"}},
+
+{id:"xlookup",cat:"search",name:"XLOOKUP",sheetsOnly:false,excelNote:"スプレッドシートでは非対応（類似はLOOKUP系、代替はINDEX+MATCHまたはFILTER）",
+ syntax:"XLOOKUP(検索値, 検索範囲, 戻り範囲)",
+ oneliner:"検索して値を取得（検索関数の統合版）",
+ formula:`XLOOKUP("田中", A:A, B:B, "")`,
+ formulaNote:"A列で「田中」を探し、同じ行のB列を返す。見つからなければ「空白」",
+ mechanism:"1つの値を「検索範囲」から探し、同じ位置にある「戻り範囲」の値を返す。",
+ points:["列番号が不要→範囲指定だけでOK（VLOOKUPより安全）","左検索が可能→検索列が右でも左でも問題なし","エラー処理内蔵→IFERROR不要になるケース多い","複数列取得できる→配列で一括取得（かなり便利）","検索方向も指定可能→下から検索などもできる"],
+ cautions:["スプレッドシートでは使えない → 代替は「INDEX+MATCH」または「FILTER」","大量データだとやや重い→特に全列参照（A:A）は注意","一致モードの理解が必要 → 0：完全一致（基本これ）、-1：以下で最大、1：以上で最小","重複データ→最初の1件しか返さない"],
+ usage:{purpose:"検索の統合版",scenario:["※スプレッドシートでは非対応（類似はLOOKUP系）"],
+   merit:["書きやすい","エラー処理込み","複数条件検索が少し書きにくい点を除けば直感的"],
+   demerit:["スプレッドシートでは処理が重くなることがある","最初の一致しか返さない"],bigdata:"△（やや重い）"},
+ extra:{title:"複数条件・複数件取得したい場合",examples:[{formula:`=XLOOKUP(A2&B2,A:A&B:B,C:C)`,desc:"A列とB列の組み合わせで検索 → 複数件取得したい場合はFILTERを使う"}]}},
+
+{id:"query",cat:"search",name:"QUERY",sheetsOnly:true,
+ syntax:'QUERY(範囲, "クエリ文", [ヘッダー行数])',
+ oneliner:"SQL風に検索・抽出・集計",
+ formula:`QUERY(A:C,"select A, sum(C) where B='営業' group by A")`,
+ formulaNote:"①B='営業'で絞る → ②Aごとにグループ化 → ③Cを合計",
+ mechanism:"範囲（A:C）から、条件（B:B=\"営業\"）を満たす行だけをそのままの形で配列として返す。",
+ points:["1つで「抽出＋集計」まで可能","大量データに強い"],
+ cautions:["列はCol1, Col2で扱う場合あり","日本語条件はシングルクォート必須"],
+ usage:{purpose:"データベースのように抽出・集計",scenario:["大量データの集計","レポート作成"],
+   merit:["超強力（SQL風）","FILTERより軽い場合あり"],demerit:["慣れが必要","日本語列が扱いづらい"],bigdata:"◎（かなり強い）"},
+ extra:{title:"クエリパターン10選",examples:[
+   {formula:`QUERY(A:C,"select B, sum(C) where B is not null group by B",1)`,desc:"① 集計（グループ別合計）：B列（担当者）ごとにC列（売上）を合計。group byはsumとセットで必須。実務用途：担当者別売上・部署別集計・商品別売上"},
+   {formula:`QUERY(A:C,"select * where C >= 100",1)`,desc:"② 条件抽出：売上が100以上の行だけ抽出。FILTERとの違い→QUERYは条件追加・集計までできる。実務用途：基準値以上のデータ抽出・異常値チェック"},
+   {formula:`QUERY(A:C,"select B, C order by C desc",1)`,desc:"③ 並び替え（ランキング）：売上の高い順に並べる。desc=大きい順／asc=小さい順。実務用途：ランキング表・上位分析"},
+   {formula:`QUERY(A:C,"select * where B='田中' and C >= 100",1)`,desc:"④ 複数条件（AND）：「田中」かつ「売上100以上」。OR例：where B='田中' or B='佐藤' →「田中」または「佐藤」。実務用途：担当＋条件の複数対象抽出"},
+   {formula:`QUERY(A:D,"select D, B",1)`,desc:"⑤ 列の再構成：D列とB列だけ取り出す（順番も変更）。実務用途：不要列削除・表の並び替え・レポート整形"},
+   {formula:`QUERY(A:C,"select * where B is not null",1)`,desc:"⑥ 空白除外：B列が空白の行を除外。空白があると集計がズレ、見た目も崩れるため。実務用途：データクレンジング"},
+   {formula:`QUERY(A:C,"select B, sum(C) group by B label sum(C) '売上合計'",1)`,desc:"⑦ 見出し変更：列名を「売上合計」に変更。QUERYのデフォルト列名（sum(C)等）は見にくいため。実務用途：レポートそのまま提出"},
+   {formula:`QUERY(A:C,"select * where A >= date '2026-04-01' and A <= date '2026-04-30'",1)`,desc:"⑧ 日付条件：2026年4月のデータだけ抽出。注意：date 'YYYY-MM-DD' の形式必須。実務用途：月次・週次レポート"},
+   {formula:`QUERY(A:C,"select B, sum(C) group by B pivot A",1)`,desc:"⑨ ピボット（クロス集計）：行=担当／列=日付／値=売上合計。実務用途：日別×担当、商品×月"},
+   {formula:`QUERY(IMPORTRANGE(A1,"Sheet1!A:C"),"select Col1, sum(Col2) group by Col1",1)`,desc:"⑩ 外部データ連携：外部ファイルのデータを集計して表示。列名がCol1,Col2に変わる点に注意。初回はアクセス許可が必要。実務用途：複数拠点データ統合・月別ファイルまとめ"},
+ ]}},
+
+// ---------------- 集計系 ----------------
+{id:"countifs",cat:"agg",name:"COUNTIFS",sheetsOnly:false,
+ syntax:"COUNTIFS(範囲1, 条件1, 範囲2, 条件2…)",
+ oneliner:"条件に合う件数を数える",
+ formula:`COUNTIFS(A:A,"営業", B:B,">=100")`,
+ formulaNote:"A列=\"営業\" AND B列>=100 → TRUEなら+1",
+ mechanism:"複数条件をすべて満たす行の件数をカウントする。",
+ points:["条件はANDで評価","ワイルドカード（*）使用可能"],
+ cautions:["OR条件はそのまま書けない（複数COUNTIFSで対応）","数値条件は文字列で書く（\">=100\"）"],
+ usage:{purpose:"条件に合う件数カウント",scenario:["条件別件数（ランク分けなど）"],
+   merit:["軽い","複数条件OK"],demerit:["抽出はできない（数だけ）"],bigdata:"◎（かなり強い）"},
+ extra:{title:"重複チェックの実例",examples:[
+   {formula:`=IF(M4="","",IF(COUNTIF($M$2:M4,M4)>=2,"●",""))`,desc:"M列の重複チェックを行い、2回目以降のデータに「●」を付ける。M4=\"\"なら何も表示しない／COUNTIF($M$2:M4,M4)でM2から現在行までM4と同じ値が何回あるか数え、2回以上なら「●」を表示"},
+ ]}},
+
+{id:"sumifs",cat:"agg",name:"SUMIFS",sheetsOnly:false,
+ syntax:"SUMIFS(合計範囲, 条件範囲1, 条件1…)",
+ oneliner:"条件に合う数値を合計する",
+ formula:`SUMIFS(C:C, A:A,"営業")`,
+ formulaNote:"A列=\"営業\"の行だけ→C列を足す",
+ mechanism:"条件に一致する行の数値だけを合計する。",
+ points:["COUNTIFSの「合計版」","集計系の基本"],
+ cautions:["合計範囲と条件範囲のサイズは一致させる","空白や文字列混在に注意"],
+ usage:{purpose:"条件に合う数値を合計",scenario:["売上集計","時間集計"],
+   merit:["軽い","実務で最重要クラス"],demerit:["柔軟性はFILTERより低い"],bigdata:"◎"}},
+
+{id:"subtotal",cat:"agg",name:"SUBTOTAL",sheetsOnly:false,
+ syntax:"SUBTOTAL(集計方法, 範囲)",
+ oneliner:"表示中のデータだけを集計する",
+ formula:`SUBTOTAL(9, C:C)`,
+ formulaNote:"表示されている行だけ→C列を合計する",
+ mechanism:"指定した集計方法（合計・平均・件数など）で、表示中のデータだけを集計する。",
+ points:["フィルター集計との相性が抜群","SUMやAVERAGEなど複数の関数を1つで代用できる"],
+ cautions:["集計方法の番号を覚える必要がある（例：9=合計、1=平均、3=件数）","通常の非表示も除外したい場合は101〜111を使用する"],
+ usage:{purpose:"フィルター後の合計・平均・件数を求める",scenario:["売上リストの絞り込み集計","勤怠データの時間集計","一覧表のリアルタイム集計"],
+   merit:["フィルター操作に自動対応","大量データでも軽い","Excelの表形式データと相性が良い"],
+   demerit:["複数条件での集計はできない","集計番号を覚える必要がある"],bigdata:"◎"}},
+
+{id:"averageifs",cat:"agg",name:"AVERAGEIFS",sheetsOnly:false,
+ syntax:"AVERAGEIFS(平均範囲, 条件範囲1, 条件1…)",
+ oneliner:"条件に合う数値の平均を求める",
+ formula:`AVERAGEIFS(F:F, B:B,"田中", D:D,"応答")`,
+ formulaNote:"担当者(B列)=\"田中\" かつ ステータス(D列)=\"応答\" の行だけを対象に、処理時間(F列)の平均を求める",
+ mechanism:"複数条件をすべて満たす行の数値だけを対象に平均を計算する。",
+ points:["SUMIFS/COUNTIFSの「平均版」","AHT（平均処理時間）やAWT（平均応答時間）の算出に最適","オペレーター別・時間帯別など切り口を変えて平均を比較できる"],
+ cautions:["対象0件だと #DIV/0! エラーになる（IFERRORで対処）","平均範囲と条件範囲のサイズは一致させる"],
+ usage:{purpose:"条件に合う数値の平均を算出",scenario:["オペレーター別・時間帯別の平均処理時間(AHT)算出","対応時間・保留時間の平均比較"],
+   merit:["軽い","SUMIFS/COUNTIFSと同じ書き方で使える"],demerit:["対象0件で#DIV/0!になる"],bigdata:"◎"},
+ extra:{title:"実務での実例（オペレーター別AHT一覧）",examples:[
+   {formula:`=IFERROR(AVERAGEIFS($F:$F,$B:$B,$B2,$D:$D,"応答"),"")`,desc:"B2のオペレーターについて、応答済みの通話だけを対象に処理時間(F列)の平均を求める。IFERRORで対象0件の場合の#DIV/0!を回避"},
+ ]}},
+
+{id:"maxifs-minifs",cat:"agg",name:"MAXIFS / MINIFS",sheetsOnly:false,
+ syntax:"MAXIFS(最大範囲, 条件範囲1, 条件1…) / MINIFS(最小範囲, 条件範囲1, 条件1…)",
+ oneliner:"条件に合う最大値・最小値を取得",
+ formula:`MAXIFS(E:E, D:D,"応答")`,
+ formulaNote:"ステータス(D列)=\"応答\"の行だけを対象に、応答時間(E列)の最大値（最も待たせた時間）を取得",
+ mechanism:"条件に一致する行の中から、指定した範囲の最大値（またはMINIFSで最小値）を返す。",
+ points:["ワーストケース（最悪値）の特定に便利","SLA監視で「最も待たせた時間」を即座に把握できる","MINIFSで「最速の対応時間」も同じ考え方で取得できる"],
+ cautions:["対象0件だと0を返す（#DIV/0!にならないため0件との区別に注意。COUNTIFSと併用して0件チェックすると安全）"],
+ usage:{purpose:"条件付きの最大値・最小値を取得",scenario:["最長応答時間・最短処理時間の特定","異常値（外れ値）の検出"],
+   merit:["軽い","異常検知・SLA監視に使いやすい"],demerit:["対象なしで0を返すため0件との区別が必要"],bigdata:"◎"}},
+
+{id:"rank-eq",cat:"agg",name:"RANK.EQ",sheetsOnly:false,
+ syntax:"RANK.EQ(値, 範囲, [順序])",
+ oneliner:"数値の順位を求める（同順位は同じ順位）",
+ formula:`RANK.EQ(B2,$B$2:$B$50,0)`,
+ formulaNote:"B2の値が範囲$B$2:$B$50の中で何位かを求める（0=降順・大きい順、1=昇順・小さい順）",
+ mechanism:"指定した数値が、範囲内の値の中で何番目に大きい（または小さい）かを順位として返す。",
+ points:["オペレーター別の成績（応答件数・処理件数・満足度など）のランキング表示に使える","同じ値は同じ順位になる（次の順位は欠番になる）"],
+ cautions:["順序の指定（0=降順、1=昇順）を間違えると逆順になる","範囲は絶対参照（$B$2:$B$50）で固定しないと、コピー時に範囲がずれる"],
+ usage:{purpose:"成績・数値の順位付け",scenario:["オペレーター別ランキング表の作成","チーム内での相対評価・表彰対象の抽出"],
+   merit:["関数1つで順位が出せる"],demerit:["同順位の扱い・絶対参照の付け忘れに注意"],bigdata:"◎"}},
+
+// ---------------- 文字処理系 ----------------
+{id:"leftrightmid",cat:"text",name:"LEFT / RIGHT / MID",sheetsOnly:false,
+ syntax:"LEFT(文字列, 文字数) / RIGHT(文字列, 文字数) / MID(文字列, 開始位置, 文字数)",
+ oneliner:"LEFT…左から取得／RIGHT…右から取得／MID…指定位置から取得",
+ formula:`LEFT(A1,2)`,
+ formulaNote:"田中 太郎 → 左から2文字 →「田中」",
+ mechanism:"文字列の位置で切り出す。LEFT＝左から、RIGHT＝右から、MID＝指定位置から。",
+ points:["固定位置の抽出に最適"],
+ cautions:["可変長のデータには弱い","全角・半角混在でズレる場合あり"],
+ usage:{purpose:"文字抽出",scenario:["名前分割","コード整形"],
+   merit:["シンプル","軽い"],demerit:["柔軟性低め"],bigdata:"◎"}},
+
+{id:"regexextract",cat:"text",name:"REGEXEXTRACT",sheetsOnly:true,
+ syntax:"REGEXEXTRACT(文字列, 正規表現)",
+ oneliner:"正規表現でパターン抽出",
+ formula:`REGEXEXTRACT(A1,"^\\S+")`,
+ formulaNote:'"^\\S+" → 最初の空白まで',
+ mechanism:"「文字のパターン」で抽出する。",
+ points:["「パターン一致」で柔軟に対応可能","名前分割などに強い"],
+ cautions:["記述が難しい","処理はやや重い"],
+ usage:{purpose:"正規表現で抽出",scenario:["名前の姓だけ取得","特定パターン抽出"],
+   merit:["柔軟性が高い"],demerit:["難しい","可読性が低い"],bigdata:"△"}},
+
+{id:"translate",cat:"text",name:"TRANSLATE",sheetsOnly:true,
+ syntax:"TRANSLATE(翻訳したい文字列, [元言語], [訳先言語])",
+ oneliner:"セルの文章を自動翻訳",
+ formula:`=TRANSLATE(A1,"ja","en")`,
+ formulaNote:"ja=日本語／en=英語。セル参照と相性が良い（例：=TRANSLATE(B2,\"en\",\"ja\")）",
+ mechanism:"セルに入っている文章をGoogleの翻訳エンジンを使って自動翻訳する。",
+ points:["元言語を自動判定できる","言語指定すると精度が安定"],
+ cautions:["自動翻訳なので誤訳あり","大量データで重くなる","関数再計算が起きる（シート更新時に再翻訳される場合がある）"],
+ usage:{purpose:"自動翻訳したい時",scenario:[],
+   merit:["関数だけで使える","自動化しやすい","多言語対応が簡単（100以上の言語対応）","リアルタイム翻訳"],
+   demerit:["翻訳品質に限界","シートが重くなる","API的な制限挙動。エラーが起きやすい","固定値ではない。翻訳結果が変動する可能性"],bigdata:"×"},
+ extra:{title:"エラー対策",examples:[{formula:`=IFERROR(TRANSLATE(A2,"ja","en"),"翻訳失敗")`,desc:"翻訳エラー時に「翻訳失敗」を表示する"}]}},
+
+{id:"regexmatch",cat:"text",name:"REGEXMATCH",sheetsOnly:true,
+ syntax:"REGEXMATCH(文字列, 正規表現)",
+ oneliner:"正規表現で条件を判定",
+ formula:`REGEXMATCH(A2,"営業")`,
+ formulaNote:"A2に「営業」が含まれているか判定",
+ mechanism:"文字列が指定した正規表現（パターン）に一致するかを判定する。",
+ points:["部分一致の判定ができる","IF関数との相性が良い","複数条件を1つの式で表現できる","正規表現を利用できる","検索や分類処理でよく使われる"],
+ cautions:["結果はTRUE/FALSEのみ","大文字小文字を区別する場合がある","正規表現の記号に慣れが必要","特殊文字はエスケープが必要な場合あり","大量データでは負荷が高くなることがある"],
+ usage:{purpose:"文字列の条件判定",scenario:["特定キーワードの有無判定","メールアドレス判定","電話番号判定","商品コード判定","条件分岐の判定"],
+   merit:["複雑な条件を簡潔に書ける","部分一致判定が得意","SEARCHより柔軟","IFと組み合わせやすい"],
+   demerit:["正規表現の知識が必要","式を見ただけでは分かりにくい","処理内容によっては重い","保守担当者が理解しづらい場合がある"],
+   bigdata:"○（数千行程度なら実用的。複雑な正規表現は負荷増加。ARRAYFORMULAやMAPとの併用時は注意。全列参照は避けた方がよい）"}},
+
+// ---------------- 条件分岐・エラー処理系 ----------------
+{id:"if",cat:"cond",name:"IF",sheetsOnly:false,
+ syntax:"IF(条件, 真の場合, 偽の場合)",
+ oneliner:"条件によって表示を切り替える",
+ formula:`IF(A1="","",B1)`,
+ formulaNote:"A1が空白なら空白、そうでなければB1を表示",
+ mechanism:"条件に応じて返す値を切り替える。",
+ points:["表示制御の基本","他関数と組み合わせる前提"],
+ cautions:["ネストが増えると読みにくい","条件の抜け漏れに注意"],
+ usage:{purpose:"条件分岐",scenario:["空白制御","表示切替"],
+   merit:["基本中の基本"],demerit:["ネストすると読みにくい"],bigdata:"◎"}},
+
+{id:"iferror",cat:"cond",name:"IFERROR",sheetsOnly:false,
+ syntax:"IFERROR(値, エラー時の値)",
+ oneliner:"エラー時に別の値を表示する",
+ formula:`IFERROR(FILTER(A:B, B:B="営業"), "")`,
+ formulaNote:"FILTERがエラーになった場合は空白を表示",
+ mechanism:"エラーなら別の値に置き換える。",
+ points:["表示をきれいにできる","実務ではほぼ必須"],
+ cautions:["エラー原因が隠れる","デバッグ時は外すのが基本"],
+ usage:{purpose:"エラー回避",scenario:["FILTERやIMPORTRANGE対策"],
+   merit:["見た目を整える"],demerit:["エラー原因が見えなくなる"],bigdata:"◎"}},
+
+// ---------------- 配列・自動化・外部連携系 ----------------
+{id:"importrange",cat:"array",name:"IMPORTRANGE",sheetsOnly:true,
+ syntax:'IMPORTRANGE("スプレッドシートのURL or ID", "シート名!範囲")',
+ oneliner:"別ファイルのデータを取得",
+ formula:`IMPORTRANGE("URL","Sheet1!A:C")`,
+ formulaNote:"別スプレッドシートのデータをリアルタイムで読み込む",
+ mechanism:"別スプレッドシートのデータをリアルタイムで読み込む。",
+ points:["初回は「アクセス許可」が必要","他ファイルの統合に必須"],
+ cautions:["大量使用で非常に重くなる","「内部エラー」が出ることがある","なるべく範囲を絞る"],
+ usage:{purpose:"別シートからデータ取得",scenario:["複数ファイル統合","拠点管理"],
+   merit:["自動連携","一元管理可能"],demerit:["重い","エラーが出やすい（内部エラー等）","初回許可必要"],bigdata:"×（かなり重い）"},
+ extra:{title:"対策：必要範囲だけ取得しQUERYと併用",examples:[{formula:`=IMPORTRANGE(A1,"本社!B5:CU110")`,desc:"必要な範囲だけを絞って取得することで負荷を抑える"}]}},
+
+{id:"let",cat:"array",name:"LET",sheetsOnly:true,
+ syntax:"LET(名前, 値, 処理)",
+ oneliner:"式の中に一時的な変数を作る",
+ formula:`LET(txt, INDEX(A:A, MATCH(D2,B:B,0)), LEFT(txt,3))`,
+ formulaNote:"B列でD2を探し、その行のA列データの先頭3文字を取得する式",
+ mechanism:"値に名前を付けて、一時的な変数として使う関数。",
+ points:["同じ計算を何回も書かなくてよい","式が読みやすくなる","重い処理を1回で済ませられる","長い式の保守性が上がる"],
+ cautions:["LET内で作った名前は外で使えない","最後に「返す結果」を書く必要がある","変数名の付け方が悪いと逆に読みにくい"],
+ usage:{purpose:"長い式の整理・高速化",scenario:["MATCH・FILTER・QUERY・IMPORTRANGEの再利用","複雑なネスト式の整理","同じ計算を複数回使う時"],
+   merit:["式が短く見やすくなる","再計算を減らせる","修正しやすい"],
+   demerit:["LET未経験者には分かりにくい","簡単な式では逆に冗長になる場合あり"],bigdata:"◎"}},
+
+{id:"array-constrain",cat:"array",name:"ARRAY_CONSTRAIN",sheetsOnly:true,
+ syntax:"ARRAY_CONSTRAIN(配列, 行数, 列数)",
+ oneliner:"配列の表示件数を制限する",
+ formula:`ARRAY_CONSTRAIN(A1:C100, 10, 2)`,
+ formulaNote:"先頭10行の2列だけ表示",
+ mechanism:"配列データの表示範囲を、指定した行数・列数だけに制限する。",
+ points:["「先頭○行だけ取得」が簡単","FILTERやQUERY結果の件数制御に便利","配列数式の暴走防止にも使える","表示だけを制限する関数"],
+ cautions:["元データ自体は減らない","途中行ではなく先頭から取得される","範囲不足でもエラーにはならない","大量配列の根本負荷は減らない場合あり"],
+ usage:{purpose:"配列結果の件数制限",scenario:["QUERY結果の上位表示","FILTER結果の件数制限","スプレッドシート軽量化補助","プレビュー表示"],
+   merit:["表示件数を簡単に制御できる","配列の広がり防止になる","見た目を整理しやすい"],
+   demerit:["取得順は制御できない","元計算は実行されることが多い","大量データ高速化には限界あり"],
+   bigdata:"○（表示制御には有効。ただしQUERY/FILTER自体が重い場合は効果限定的）"}},
+
+{id:"arrayformula",cat:"array",name:"ARRAYFORMULA",sheetsOnly:true,
+ syntax:"ARRAYFORMULA(配列数式)",
+ oneliner:"1つの式を全行へ一括適用",
+ formula:`ARRAYFORMULA(A2:A*B2:B)`,
+ formulaNote:"A列×B列を全行まとめて計算",
+ mechanism:"通常は1セルずつ計算する数式を、複数行・複数列へ一括適用する関数。",
+ points:["1つの数式で列全体を処理できる","オートフィル不要","新しいデータ追加時も自動計算される","IF、VLOOKUP、LEFT、REGEXEXTRACTなどと相性が良い","Googleスプレッドシートの自動化でよく使われる"],
+ cautions:["全列参照との組み合わせは重くなりやすい","ARRAYFORMULA非対応の関数もある","出力先にデータがあるとエラーになる","不要な空行まで計算する場合がある","大量データではシート全体の速度低下につながる"],
+ usage:{purpose:"列全体への一括計算",scenario:["売上計算の自動化","文字列加工の自動化","VLOOKUPの一括実行","IF条件判定の一括実行","IMPORT系データの整形"],
+   merit:["数式が1個で済む","メンテナンスしやすい","新規行追加時に自動対応できる","入力ミスやコピー漏れを防げる"],
+   demerit:["処理範囲が広すぎると重い","初心者には動作が分かりにくい","エラー発生時に原因箇所を特定しにくい","複雑なARRAYFORMULAは保守性が低下する"],
+   bigdata:"△（数百～数千行程度なら非常に有効。数万行以上では注意。全列参照は極力避け、範囲を限定すると高速化しやすい）"},
+ extra:{title:"実務パターン4選",examples:[
+   {formula:`=ARRAYFORMULA(C2:C*D2:D)`,desc:"① 売上計算：単価×数量を全行計算"},
+   {formula:`=ARRAYFORMULA(IF(A2:A="","",A2:A*1.1))`,desc:"② IFを全行に適用：A列に値がある行だけ計算"},
+   {formula:`=ARRAYFORMULA(LEFT(A2:A,3))`,desc:"③ 文字列抽出：A列の先頭3文字を全行取得"},
+   {formula:`=ARRAYFORMULA(IFERROR(VLOOKUP(A2:A,F:G,2,FALSE),""))`,desc:"④ VLOOKUP一括実行：A列の値をまとめて検索"},
+ ]}},
+
+{id:"map",cat:"array",name:"MAP",sheetsOnly:true,
+ syntax:"MAP(配列1, LAMBDA(変数, 処理))",
+ oneliner:"配列を1件ずつ繰り返し処理",
+ formula:`MAP(A2:A, LAMBDA(a, LEFT(a,3)))`,
+ formulaNote:"A列の各セルに対して、先頭3文字を取得",
+ mechanism:"配列の各要素を1件ずつ処理し、その結果を配列として返す関数。",
+ points:["ARRAYFORMULAより柔軟な処理ができる","行ごとに個別の計算が可能","LAMBDAとセットで使用する","複数列を同時に処理できる","IFやREGEXEXTRACTとの相性が良い"],
+ cautions:["Googleスプレッドシートの比較的新しい関数","LAMBDAの理解が必要","大量データでは処理が重くなる場合がある","配列サイズが大きいと再計算負荷が高い"],
+ usage:{purpose:"行単位の繰り返し処理",scenario:["VLOOKUPやINDEX/MATCHの繰り返し実行","文字列加工","条件分岐処理","正規表現抽出","複数列を使った計算"],
+   merit:["複雑な処理をシンプルに書ける","ARRAYFORMULAでは難しい処理に対応できる","行ごとの条件判定がしやすい","可読性が高い"],
+   demerit:["LAMBDAに慣れていないと理解しにくい","単純計算ならARRAYFORMULAの方が簡単","処理内容によっては重くなる","共同編集時に理解できる人が限られる場合がある"],
+   bigdata:"○（柔軟性は高いが処理内容に依存。数百～数千行なら実用的。MATCHやREGEXEXTRACTを組み込むと負荷増加。全列参照との組み合わせは非推奨）"},
+ extra:{title:"実務パターン4選",examples:[
+   {formula:`=MAP(A2:A, LAMBDA(a, LEFT(a,3)))`,desc:"① 先頭3文字取得：A列を1行ずつ処理して先頭3文字を返す"},
+   {formula:`=MAP(A2:A, LAMBDA(a, IF(a="","",LEFT(a,3))))`,desc:"② 空欄除外：空欄なら空欄を返す"},
+   {formula:`=MAP(B2:B,C2:C,LAMBDA(b,c,b*c))`,desc:"③ 2列を使った計算：B列×C列を各行で計算"},
+   {formula:`=MAP(A2:A,LAMBDA(a,IFERROR(INDEX(D:D,MATCH(a,B:B,0)),"")))`,desc:"④ INDEX/MATCHを繰り返す：A列の値ごとに検索を実行"},
+ ]}},
+
+{id:"lambda",cat:"array",name:"LAMBDA",sheetsOnly:true,
+ syntax:"LAMBDA(変数, 処理)",
+ oneliner:"自分だけの関数を作る",
+ formula:`LAMBDA(a, LEFT(a,3))`,
+ formulaNote:"受け取った値の先頭3文字を返す関数を作成する",
+ mechanism:"独自の関数（処理ルール）を作る関数。変数に値を受け取り、その値に対して指定した処理を実行する。単体ではあまり使わず、MAP・BYROW・BYCOL・REDUCE・SCANと組み合わせて使用することが多い。",
+ points:["処理を関数化できる","同じ処理を繰り返し利用できる","MAPなどの補助関数として使うことが多い","変数名を自由に付けられる","複雑な数式を整理できる"],
+ cautions:["単体利用の機会は少ない","変数はLAMBDA内でのみ有効","変数名は分かりやすく付ける方がよい","ネストが深くなると読みにくくなる","共同編集者が理解しづらい場合がある"],
+ usage:{purpose:"処理の関数化",scenario:["MAPの行ごとの処理定義","BYROWの行単位処理","BYCOLの列単位処理","REDUCEの集計処理","SCANの累積計算"],
+   merit:["数式の再利用性が高い","可読性が向上する","複雑な式を整理できる","処理内容を明確にできる"],
+   demerit:["初心者には理解しづらい","単純な処理ではメリットが少ない","ネストが増えると保守しにくい","デバッグが難しい場合がある"],
+   bigdata:"○（LAMBDA自体は軽いが、内部でMATCHやREGEXEXTRACTを使うと重くなる。MAPとの組み合わせで大量行処理が可能。全列参照は避けた方がよい）"},
+ extra:{title:"MAPとの関係（役割分担）",examples:[
+   {formula:`=MAP(A2:A, LAMBDA(a, LEFT(a,3)))`,desc:"MAP＝「繰り返し実行する担当」、LAMBDA＝「何をするか決める担当」。aを受け取りLEFT(a,3)を返す処理をA2,A3,A4…に順に適用する"},
+   {formula:`=MAP(A2:A,LAMBDA(a,IF(a="","",LEFT(a,3))))`,desc:"条件分岐：空欄なら空欄、値があれば先頭3文字を返す"},
+ ]}},
+
+// ---------------- 日付関連 ----------------
+{id:"today",cat:"date",name:"TODAY",sheetsOnly:false,
+ syntax:"TODAY()",oneliner:"今日の日付を表示",
+ formula:`=TODAY()`,formulaNote:"実行日の日付を表示（シリアル値）",
+ mechanism:"今日の日付を返す。",points:["日付入力の自動化に使う"],cautions:["開くたびに値が更新される"],
+ usage:{purpose:"日付入力の自動化",scenario:["日次レポートの日付欄"],merit:["常に最新の日付になる"],demerit:["固定値ではない"],bigdata:"◎"}},
+
+{id:"eomonth",cat:"date",name:"EOMONTH",sheetsOnly:false,
+ syntax:"EOMONTH(開始日, 月数)",oneliner:"月末の日付を表示",
+ formula:`=EOMONTH(A2,0)`,formulaNote:"A2が含まれる月の月末日を表示",
+ mechanism:"指定日から○か月後（または前）の月末日を返す。",points:["締め日・月末処理に便利"],cautions:["月数は0=当月、1=翌月、-1=前月"],
+ usage:{purpose:"締め日・月末処理",scenario:["請求締め日の算出"],merit:["月の日数を意識せず計算できる"],demerit:[],bigdata:"◎"}},
+
+{id:"edate",cat:"date",name:"EDATE",sheetsOnly:false,
+ syntax:"EDATE(開始日, 月数)",oneliner:"○か月後の日付を表示",
+ formula:`=EDATE(A2,1)`,formulaNote:"A2の1か月後の日付を表示",
+ mechanism:"指定日から○か月後（または前）の同日を返す。",points:["更新日・期限計算に便利"],cautions:["月末日は自動調整される"],
+ usage:{purpose:"更新日・期限計算",scenario:["契約更新日の算出"],merit:["月をまたぐ計算が簡単"],demerit:[],bigdata:"◎"}},
+
+{id:"date",cat:"date",name:"DATE",sheetsOnly:false,
+ syntax:"DATE(年, 月, 日)",oneliner:"年月日を組み合わせて日付を作成",
+ formula:`=DATE(2026,6,4)`,formulaNote:"セル参照も可能：=DATE(A1,B1,C1)（カレンダーなどから取得した年月日の組み立てに使う）",
+ mechanism:"年・月・日の数値を組み合わせて1つの日付データを作成する。",points:["別セルの数値から日付を作れる"],cautions:["月や日に範囲外の数値を入れると自動的に繰り上がる"],
+ usage:{purpose:"別セルの数値から日付を作る",scenario:["カレンダー入力フォームの組み立て"],merit:["年月日を個別入力できる"],demerit:[],bigdata:"◎"}},
+
+{id:"text-date",cat:"date",name:"TEXT（曜日・表示形式）",sheetsOnly:false,
+ syntax:'TEXT(日付, "表示形式")',oneliner:"曜日や日付の表示形式を変更",
+ formula:`=TEXT(A1,"ddd")`,formulaNote:"例：A1に「2026/5/1」（金曜日）という日付が入っている場合、「金」と表示される",
+ mechanism:"日付データを指定した書式の文字列に変換する。",
+ points:['年月表示：=TEXT(A1,"yyyy/mm")','年月日曜日表示：=TEXT(A1,"yyyy/mm/dd(aaa)")','文字＋日付表示：=A1&TEXT(B2,"yyyy/m/d")（例：DM送付日:2026/8/17）'],
+ cautions:["表示形式の指定を間違えると文字化けのような表示になる"],
+ usage:{purpose:"曜日表示、レポートの日付整形",scenario:["曜日表示","レポートの日付整形"],merit:["表示形式を自由に変更できる"],demerit:[],bigdata:"◎"}},
+
+{id:"workday",cat:"date",name:"WORKDAY",sheetsOnly:false,
+ syntax:"WORKDAY(開始日, 日数, [祝日範囲])",oneliner:"土日を除いたN営業日後を計算",
+ formula:`=WORKDAY(A1,10)`,formulaNote:"10営業日後。土日を除外して計算する",
+ mechanism:"土日を除外したN営業日後（または前）の日付を返す。",points:["納期・締切の計算に便利"],
+ cautions:["⚠️祝日や会社カレンダーなどは反映されない","別途祝日リストを範囲として指定して対応する"],
+ usage:{purpose:"納期・締切の計算",scenario:["納期算出"],merit:["土日を自動で除外できる"],demerit:["祝日は自前で用意する必要"],bigdata:"◎"}},
+
+{id:"networkdays",cat:"date",name:"NETWORKDAYS",sheetsOnly:false,
+ syntax:"NETWORKDAYS(開始日, 終了日, [祝日範囲])",oneliner:"営業日数を数える",
+ formula:`=NETWORKDAYS(A1,B1)`,formulaNote:"開始日〜終了日の間の土日を除外した日数を数える",
+ mechanism:"2つの日付間にある土日を除外した営業日数をカウントする。",points:["稼働日数の集計に便利"],
+ cautions:["⚠️祝日や会社カレンダーなどは反映されない（別途祝日リストで対応）"],
+ usage:{purpose:"稼働日数の集計",scenario:["案件開始から終了までの土日除外日数","本日時点で残り営業日数を求める"],merit:["土日を自動で除外できる"],demerit:["祝日は自前で用意する必要"],bigdata:"◎"},
+ extra:{title:"応用：残り営業日数",examples:[{formula:`=NETWORKDAYS(TODAY(),B1,祝日範囲)`,desc:"本日時点から締切(B1)までの残り営業日数を、祝日範囲を除外して計算する"}]}},
+
+{id:"datedif",cat:"date",name:"DATEDIF",sheetsOnly:false,
+ syntax:'DATEDIF(開始日, 終了日, "単位")',oneliner:"2つの日付の差を計算",
+ formula:`=DATEDIF(A1,B1,"D")`,formulaNote:'単位："D"=日数差、"M"=月数差、"Y"=年数差',
+ mechanism:"2つの日付の差を、指定した単位（日／月／年）で計算する。",points:["経過日数・月数・年数の算出に使う"],cautions:["単位の指定を誤ると意図しない結果になる"],
+ usage:{purpose:"経過日数・月数・年数の算出",scenario:["契約経過期間の算出"],merit:["日/月/年を切り替えて計算できる"],demerit:[],bigdata:"◎"}},
+
+{id:"hourminutesecond",cat:"date",name:"HOUR / MINUTE / SECOND",sheetsOnly:false,
+ syntax:"HOUR(時刻) / MINUTE(時刻) / SECOND(時刻)",oneliner:"時刻データから時・分・秒を取り出す",
+ formula:`=HOUR(A1)`,formulaNote:"A1が14:35:20なら14を返す（時間帯別の入電集計などに使う）",
+ mechanism:"時刻データから「時」「分」「秒」の数値部分だけを取り出す。",
+ points:["着信時刻から「時間帯」を取り出し、時間帯別の入電件数集計に使える","COUNTIFSと組み合わせて「10時台の入電数」等を集計できる"],
+ cautions:["対象セルが正しい時刻形式（シリアル値）でないと正しく取得できない","文字列で入力された時刻はTIMEVALUE等での変換が必要な場合がある"],
+ usage:{purpose:"時間帯別の集計",scenario:["時間帯別入電数の集計（ピーク時間の特定）","シフト・人員配置の検討材料づくり"],
+   merit:["シンプルで軽い"],demerit:["文字列データにはそのまま使えない"],bigdata:"◎"},
+ extra:{title:"実務での実例（時間帯別入電件数の集計）",examples:[
+   {formula:`=COUNTIFS($H:$H,">="&TIME(10,0,0),$H:$H,"<"&TIME(11,0,0))`,desc:"着信時刻(H列)が10時台（10:00〜10:59）の件数を数える。TIME(時,分,秒)で時間帯の境界値を作り、COUNTIFSの範囲条件として使う"},
+ ]}},
+
+{id:"weekday",cat:"date",name:"WEEKDAY",sheetsOnly:false,
+ syntax:"WEEKDAY(日付, [種類])",oneliner:"日付から曜日番号を取得",
+ formula:`=WEEKDAY(A1,1)`,formulaNote:"種類1指定で日曜=1、月曜=2…土曜=7を返す（曜日別の入電傾向分析に使う）",
+ mechanism:"日付データから曜日を表す番号を返す。",
+ points:["曜日別の入電数・対応件数の傾向分析に使える","TEXT(A1,\"aaa\")で曜日名表示もできるが、集計にはWEEKDAYの数値の方がCOUNTIFS等と組み合わせやすい"],
+ cautions:["種類（第2引数）によって番号の割り当てが変わる。種類1と2以降を混在させない"],
+ usage:{purpose:"曜日別の集計・傾向分析",scenario:["曜日別入電数の比較（月曜が多い、など）","シフト計画の根拠データ作成"],
+   merit:["曜日ごとの傾向を数値で扱える"],demerit:["種類の指定を誤ると集計がずれる"],bigdata:"◎"}},
+
+// ---------------- 電話番号処理 ----------------
+{id:"phone-format",cat:"phone",name:"電話番号：国番号を日本国内形式に変換",sheetsOnly:true,
+ syntax:"IF + REGEXMATCH + REGEXREPLACE の組み合わせ",oneliner:"海外表記の電話番号を国内形式（0始まり）に整形",
+ formula:`=IF(REGEXMATCH(REGEXREPLACE(TO_TEXT(A1),"[^0-9]",""),"^(0081|81)"),"0"&REGEXREPLACE(REGEXREPLACE(TO_TEXT(A1),"[^0-9]",""),"^(0081|81)0?",""),REGEXREPLACE(TO_TEXT(A1),"[^0-9]",""))`,
+ formulaNote:"数字だけに統一して国番号（0081/81）を「0」に変換（ハイフンなし）。例：「81 80-1234-5678」→「08012345678」",
+ mechanism:"REGEXREPLACEで数字以外を除去し、先頭が国番号（0081/81）ならそれを除いて「0」を付け直す。国番号でなければそのまま数字化する。",
+ points:["TO_TEXTで数値化・指数表記を防止してから処理する","国番号の有無をREGEXMATCHで判定してから分岐する"],
+ cautions:["元の値が数値としてExcel/Sheetsに入っていると指数表記（9.012345678E9）になる場合があるためTO_TEXTが必須"],
+ usage:{purpose:"海外表記の電話番号を整形",scenario:["備考欄などに入った海外形式の電話番号を国内形式へ統一"],merit:["国番号表記の揺れを自動で統一できる"],demerit:["国番号のパターンを網羅する必要がある"],bigdata:"○"},
+ extra:{title:"応用パターン3選",examples:[
+   {formula:`=REGEXREPLACE(IF(REGEXMATCH(REGEXREPLACE(TO_TEXT(A1),"[^0-9]",""),"^(0081|81)"),"0"&REGEXREPLACE(REGEXREPLACE(TO_TEXT(A1),"[^0-9]",""),"^(0081|81)0?",""),REGEXREPLACE(TO_TEXT(A1),"[^0-9]","")),"^(\\d{3})(\\d{4})(\\d{4})$","$1-$2-$3")`,desc:"携帯番号をハイフン付き（090-1234-5678形式）に統一。例：「81 80-1234-5678」→「080-1234-5678」"},
+   {formula:`=LET(n, IF(REGEXMATCH(...),"0"&...,...), IFS(REGEXMATCH(n,"^(070|080|090|050)\\d{8}$"),REGEXREPLACE(n,"^(\\d{3})(\\d{4})(\\d{4})$","$1-$2-$3"), REGEXMATCH(n,"^0120\\d{6}$"),REGEXREPLACE(n,"^(\\d{4})(\\d{3})(\\d{3})$","$1-$2-$3"), REGEXMATCH(n,"^0570\\d{6}$"),REGEXREPLACE(n,"^(\\d{4})(\\d{3})(\\d{3})$","$1-$2-$3"), REGEXMATCH(n,"^03\\d{8}$"),REGEXREPLACE(n,"^(\\d{2})(\\d{4})(\\d{4})$","$1-$2-$3"), REGEXMATCH(n,"^06\\d{8}$"),REGEXREPLACE(n,"^(\\d{2})(\\d{4})(\\d{4})$","$1-$2-$3"), REGEXMATCH(n,"^0\\d{9}$"),REGEXREPLACE(n,"^(\\d{3})(\\d{3})(\\d{4})$","$1-$2-$3"), TRUE, n))`,desc:"固定電話も混在する場合（ハイフンあり）。携帯／フリーダイヤル(0120)／0570／東京(03)／大阪(06)／その他0始まり10桁、で桁の切り方を振り分ける。例：「0300000000」→「03-0000-0000」"},
+   {formula:`=ARRAYFORMULA(IF(A2:A="","",IF(LEFT(REGEXREPLACE(TO_TEXT(A2:A),"[- 　]",""),1)="0",REGEXREPLACE(TO_TEXT(A2:A),"[- 　]",""),"0"&REGEXREPLACE(TO_TEXT(A2:A),"[- 　]",""))))`,desc:"0がない番号だけ先頭に0を付け、ハイフンやスペースも削除する（全行一括）。例：「9.012345678E9」→「09012345678」"},
+ ]}},
+
+{id:"phone-areacode",cat:"phone",name:"電話番号：市外局番マスタで正確にハイフン付与",sheetsOnly:true,
+ syntax:"市外局番マスタ＋COUNTIF＋IFS の組み合わせ",oneliner:"市外局番の桁数がまちまちな固定電話に正確なハイフン位置を判定する",
+ formula:`=IF(COUNTIF(市外局番!A:A,LEFT(B2,5)),LEFT(B2,5),IF(COUNTIF(市外局番!A:A,LEFT(B2,4)),LEFT(B2,4),IF(COUNTIF(市外局番!A:A,LEFT(B2,3)),LEFT(B2,3),IF(COUNTIF(市外局番!A:A,LEFT(B2,2)),LEFT(B2,2),""))))`,
+ formulaNote:"電話番号の先頭から5桁一致→なければ4桁一致→3桁→2桁の順で「市外局番」シートに登録された市外局番マスタと照合する",
+ mechanism:"①「市外局番マスタ」を別シートに作成（全国の市外局番を登録：03/06/011/092/075/052/09969/04992 等）→②国番号を0に正規化→③市外局番を5→4→3→2桁の順でマスタと照合して抽出→④市外局番の有無で残りの桁の切り方を決めてハイフンを挿入する。",
+ points:["携帯（070/080/090/050）とフリーダイヤル(0120)・0570は固定の桁割りで処理し、それ以外は市外局番マスタで判定する","市外局番は桁数が2〜5桁まちまちなので、長い桁から順にマスタ照合する必要がある"],
+ cautions:["市外局番マスタの網羅性がそのまま精度に直結する","Google Apps Script（GAS）で同等処理を書く方法もある（areaCodesを長さの降順にソートして前方一致で判定）"],
+ usage:{purpose:"完全に正確なハイフン位置を自動判定する",scenario:["固定電話番号の表記統一（市外局番の桁ゆれに対応）"],merit:["市外局番の桁数が不揃いでも正確にハイフンを打てる"],demerit:["市外局番マスタの整備・保守が必要"],bigdata:"○"}},
+
+{id:"phone-extract",cat:"phone",name:"電話番号：セルから電話番号だけ抜き出す",sheetsOnly:true,
+ syntax:"REGEXEXTRACT(文字列, 電話番号パターン)",oneliner:"備考欄などから電話番号だけ抽出",
+ formula:`=REGEXEXTRACT(C2,"\\d{2,4}-\\d{2,4}-\\d{3,4}")`,
+ formulaNote:'例：「【内容/その他情報】本社　0000-00-0000」→「0000-00-0000」',
+ mechanism:"「2〜4桁-2〜4桁-3〜4桁」というハイフン区切りの数字パターンを正規表現で検索し、一致した部分だけを抜き出す。",
+ points:["備考欄のような自由記述テキストの中から電話番号だけを取り出せる"],
+ cautions:["ハイフンなしの電話番号や表記ゆれには別パターンが必要"],
+ usage:{purpose:"備考欄などから電話番号だけ抽出",scenario:["自由記述メモの中に混在する電話番号の抜き出し"],merit:["長文の中から該当パターンだけを一発で取得できる"],demerit:["表記パターンが多いと正規表現の調整が必要"],bigdata:"○"}},
+];
+
+// あると便利な関数（handyカテゴリ：カード形式は簡易に）
+const HANDY_TIPS = [
+ {name:"TEXTJOIN",formula:`=TEXTJOIN("、",TRUE,E2:E4)`,desc:"区切り文字を指定して複数セルを1つに結合。空白セルは無視できる",use:"備考欄の情報をまとめる、姓名や住所の結合"},
+ {name:"TRIM",formula:`=TRIM(E2)`,desc:"文字列の前後・連続する余分なスペースを削除",use:"コピペしたデータの整形、検索一致率のアップ"},
+ {name:"CLEAN",formula:`=CLEAN(E2)`,desc:"改行や制御文字（目に見えないゴミ）を除去",use:"他システムからコピペしたデータのクレンジング"},
+ {name:"SUBSTITUTE",formula:`=SUBSTITUTE(E2,"-","")`,desc:"指定した文字列を別の文字列に置換",use:"電話番号のハイフン統一、表記ゆれの修正"},
+ {name:"PROPER・UPPER・LOWER",formula:`=UPPER(E2)`,desc:"英字の大文字・小文字を統一",use:"メールアドレスやIDの表記統一"},
+ {name:"TEXTBEFORE・TEXTAFTER",formula:`=TEXTBEFORE(E2,"＠")`,desc:"指定した文字の前後の文字列を取得（Excel 2021/365）",use:"正規表現を使わずに簡単な文字抽出をしたい時"},
+ {name:"TEXTSPLIT",formula:`=TEXTSPLIT(E2,"-")`,desc:"区切り文字で文字列を複数セルに分割（Excel 365）",use:"電話番号や住所の分割"},
+ {name:"UNIQUE",formula:`=UNIQUE(E2:E28)`,desc:"重複を除いたリストを作成",use:"顧客リストの重複除去、対応履歴のユニーク件数確認"},
+ {name:"SORT",formula:`=SORT(E2:F28,2,-1)`,desc:"関数で並び替え（元データは変更しない）",use:"元データを崩さずランキング表示したい時"},
+ {name:"COUNTA",formula:`=COUNTA(E2:E28)`,desc:"空白でないセルの数を数える",use:"入力済み件数の確認"},
+ {name:"COUNTBLANK",formula:`=COUNTBLANK(E2:E28)`,desc:"空白セルの数を数える",use:"入力漏れのチェック"},
+ {name:"IFS",formula:`=IFS(E2="A","受付",E2="B","対応中",TRUE,"完了")`,desc:"複数の条件をネストなしで書ける（IFの入れ子を解消）",use:"ステータスコードごとの表示分け"},
+ {name:"SWITCH",formula:`=SWITCH(E2,1,"受付",2,"対応中","完了")`,desc:"1つの値を条件に応じて振り分ける",use:"コード値を日本語ラベルに変換"},
+ {name:"STDEV",formula:`=STDEV(E2:E100)`,desc:"数値データの標準偏差（ばらつき）を計算",use:"オペレーターごとの処理時間のブレの大きさを比較（安定して対応できているか）"},
+ {name:"MODE",formula:`=MODE(E2:E100)`,desc:"最も多く出現する値（最頻値）を取得",use:"最も多い対応時間帯・最頻の問い合わせ内容コードの特定"},
+ {name:"PERCENTILE",formula:`=PERCENTILE(E2:E100,0.9)`,desc:"指定した割合（パーセンタイル）に位置する値を取得",use:"応答時間の90パーセンタイル値でSLA基準（例：90%が20秒以内）の達成状況を確認"},
+ {name:"COUNTUNIQUE",formula:`=COUNTUNIQUE(E2:E100)`,desc:"重複を除いた件数（ユニーク件数）を数える",use:"ユニーク架電者数・重複を除いた対応件数の集計"},
+ {name:"SPARKLINE",formula:`=SPARKLINE(E2:P2)`,desc:"セル内に簡易グラフ（スパークライン）を表示",use:"オペレーター別の日次対応件数の推移をセル内ミニグラフで一覧表示"},
+ {name:"FORECAST",formula:`=FORECAST(N1,既知のY範囲,既知のX範囲)`,desc:"過去のデータから将来の値を予測（線形予測）",use:"入電件数の将来予測、必要人員数の見積もり"},
+];
+const HANDY_FEATURES = [
+ {name:"フラッシュフィル（Ctrl+E）",desc:"隣の列に完成形を1つ入力してCtrl+E → 入力パターンをExcelが検出し、自動で残り全行を入力。姓名の分割・結合、電話番号の整形が一瞬で終わる"},
+ {name:"条件付き書式",desc:"ホーム→条件付き書式。条件に応じてセルの色や文字色を自動で変更。期限超過を赤色表示、対応済みをグレーアウトなど一目で分かる表に"},
+ {name:"データの入力規則（プルダウン）",desc:"データ→データの入力規則→リスト。入力候補をリストから選択させる。ステータス欄の選択式入力で入力ミス・表記ゆれを防止"},
+ {name:"ピボットテーブル",desc:"挿入→ピボットテーブル。ドラッグ操作だけで集計表を作成。担当者別・日別の対応件数集計をワンクリックで作成"},
+ {name:"名前の定義",desc:"数式→名前の定義。よく使うセル範囲に名前を付ける。数式の中の範囲参照を分かりやすい名前で表示（例：顧客マスタ）"},
+ {name:"スピル（こぼれ）",desc:"1つの数式が結果を自動的に複数セルへ展開する仕組み。FILTER・UNIQUE・SORTの結果がこの仕組みで表示される"},
+];
+
+// ★応用編（組み合わせ実例）
+const APPLIED = [
+ {title:"特定の文字以降の●文字だけを取得する（文字数が決まっている場合）",
+  formula:`=IFERROR(LET(txt, INDEX('シート1'!D:D, MATCH(A2,'シート1'!C:C, 0)), REGEXEXTRACT(txt, "【TM●】(.{3})")), "")`,
+  desc:"シート1のC列でA2を検索し、一致する行のD列から「【TM●】」の直後の3文字を抜き出す式。「【TM●】ABC」の場合、「ABC」と表示される。",
+  legend:[
+    ["INDEX + MATCH","INDEX(取得したいデータがある列, MATCH(A2, A2の値がある列, 0)) で該当行のデータを取得"],
+    ["LET","LET(txt, 値, 処理) → txt = INDEX(...) として一時保存し、後続で再利用可能にする"],
+    ["REGEXEXTRACT","REGEXEXTRACT(txt, \"【TM●】(.{3})\") →「【TM●】」を探し、(.{3})で直後3文字を取得"],
+    ["IFERROR","該当データがない場合は空白を返す"],
+  ]},
+ {title:"特定の文字以降を全て取得する",
+  formula:`=MAP(B6:B, LAMBDA(b, IF(b="","", IFERROR(REGEXEXTRACT(INDEX('シート1'!D:D, MATCH(b,'シート1'!C:C,0)), "＜[\\s\\S]*"), ""))))`,
+  desc:"B6:Bの各セルを順番に処理し、「シート1」のC列から一致する値を探し、対応するD列のデータから「＜」以降の文字列を抽出する。処理の流れ：B6:Bを1件ずつ処理→空白なら終了→シート1のC列から検索→一致行のD列を取得→「＜」以降を抽出→エラーなら空白。",
+  legend:[
+    ["MAP","MAP(B6:B, LAMBDA(...)) → B6:Bの各セルに対して同じ処理を実行"],
+    ["LAMBDA","LAMBDA(b, ...) → bはMAPが渡してくる1行分の値（東京・大阪・福岡…）"],
+    ["IF","IF(b=\"\", \"\", ...) → B列が空白なら空白を返す"],
+    ["INDEX + MATCH","INDEX('シート1'!D:D, MATCH(b,'シート1'!C:C,0)) → bと一致する行をC列から探し、D列の値を取得（例：大阪→「商品＜青＞」）"],
+    ["REGEXEXTRACT","REGEXEXTRACT(文字列, \"＜[\\s\\S]*\") →「＜」以降を全部取得（[\\s\\S]=すべての文字、*=0文字以上）。「商品＜青＞」→「＜青＞」"],
+    ["IFERROR","C列に該当データがない／D列に「＜」がない／MATCHが失敗した場合は空白"],
+  ]},
+ {title:"文章の中から該当する部分のみを抜き出す（区間指定の抽出）",
+  formula:`=IFERROR(REGEXEXTRACT(INDEX(FILTER('データ'!N:N,'データ'!$M:$M=$AA5,'データ'!$B:$B=$B5),1),"②今後のキーマン[\\s\\S]*?名前：(.+?)様"),"")`,
+  desc:"データシートから条件に合う行を探し、N列の文章の中から『今後のキーマンの名前』だけを抜き出す（「様」は表示しない）。処理の流れ：条件（M列=AA5、B列=B5）に合う行を探す→N列の文章を取得→「②今後のキーマン」以降で「名前：○○様」の○○だけ抜き出す→エラーなら空白。",
+  legend:[
+    ["FILTER","FILTER('データ'!N:N,'データ'!$M:$M=$AA5,'データ'!$B:$B=$B5) → M列=AA5 かつ B列=B5 を満たす行のN列を取得"],
+    ["INDEX + FILTER","INDEX(FILTER(...),1) → 複数件見つかった場合、1件目だけ取得する"],
+    ["REGEXEXTRACT","\"②今後のキーマン[\\s\\S]*?名前：(.+?)様\" →「②今後のキーマン」から最短一致（*?）で「名前：」まで進み、「様」の手前までを取得。例：「②今後のキーマン／部署：営業部／名前：山田様／役職：部長」→「山田」"],
+    ["IFERROR","名前が見つからなければ空白"],
+  ]},
+ {title:"1つのセルに入っている【姓】【名】を連結して表示する",
+  formula:`=LET(txt,XLOOKUP($B6,'データ'!H:H,'データ'!BA:BA),IFERROR(REGEXEXTRACT(txt,"【姓】([^\\n\\r]+)")&" "&REGEXEXTRACT(txt,"【名】([^\\n\\r]+)"),""))`,
+  desc:"① XLOOKUP($B6,'データ'!H:H,'データ'!BA:BA) でBAセルの内容を取得 → ② REGEXEXTRACT(txt,\"【姓】([^\\n\\r]+)\")で「山田」を取得 → ③ REGEXEXTRACT(txt,\"【名】([^\\n\\r]+)\")で「太郎」を取得 → ④ スペースで結合して「山田 太郎」を表示 → ⑤ エラー時は空白。",
+  legend:[
+    ["XLOOKUP","B6に該当する行を'データ'!H:Hから探し、同じ行のBA列を取得"],
+    ["LET","txtとしてBA列の値を一時保存し、後続の2つのREGEXEXTRACTで再利用"],
+    ["REGEXEXTRACT","「【姓】」「【名】」という文字列を探し、()内で「以降・改行以外の文字（[^\\n\\r]+）」を取り出す。\\n=改行(LF/1行下へ)、\\r=改行(CR/行頭へ)、[^\\n\\r]+=改行が来るまでの文字を全部取得"],
+    ["IFERROR","処理が失敗したら空白"],
+  ]},
+ {title:"最新の日時のデータを取得する",
+  formula:`=MAP($F$5:$F,LAMBDA(x,IF(x="","",IFERROR(INDEX(SORT(FILTER({'貼付け'!CA:CA,'貼付け'!$BV:$BV,'貼付け'!$BX:$BX},'貼付け'!$CI:$CI=x),2,FALSE,3,FALSE),1,1),""))))`,
+  desc:"F列＝「貼り付け」シートCI列 の値を基準に一致した最新データにあるCA列を取得する。最新の日付（貼り付けBV列）・時間（貼り付けBX列）のレコードを探し、そのレコードのCA列の値を表示する。",
+  legend:[
+    ["MAP + LAMBDA","F列の各値xについて同じ処理を繰り返す"],
+    ["FILTER","'貼付け'!CI列 が x と一致する行だけを {CA, BV, BX} の3列セットで抽出"],
+    ["SORT","抽出結果を2列目（BV＝日付）→3列目（BX＝時間）の順で降順（FALSE, FALSE）に並べ替え＝最新が先頭に来る"],
+    ["INDEX","並べ替え後の先頭行・1列目（CA）を取得"],
+    ["IFERROR / IF","該当なし・空白の場合は空白を返す"],
+  ]},
+ {title:"セル内のスペースを削除する",
+  formula:`=SUBSTITUTE(SUBSTITUTE(A1," ",""),"　","")`,
+  desc:"半角スペース（\" \"）と全角スペース（\"　\"）の両方をSUBSTITUTEで二重に置換して削除する。完全一致の判定を行う前処理としてよく使う。",
+  legend:[["SUBSTITUTE（2重）","内側で半角スペースを削除→外側でその結果から全角スペースを削除。表記ゆれをなくし完全一致判定の精度を上げる"]]},
+ {title:"有効リード数をカウントする（0件なら空白表示）",
+  formula:`=LET(n,COUNTIFS('シート1'!$A$2:$A,C3,'シート1'!$H$2:$H,"有効*",'シート1'!$G$2:$G,$D3),IF(n=0,"",n))`,
+  desc:"「シート1」の中から、A列がC3（カウントしたい問い合わせ・資料名）と一致し、H列が「有効」で始まり、かつG列がD3（追加の条件）と一致する行の件数を数える。0件のときは数字の「0」ではなく空白を表示する。",
+  legend:[
+    ["COUNTIFS","'シート1'!$A$2:$A＝C3　かつ　$H$2:$H が「有効*」　かつ　$G$2:$G＝$D3　を満たす行の件数を数える"],
+    ["\"有効*\"（ワイルドカード）","「有効」で始まる文字列すべてに一致する（例：「有効」「有効（電話）」「有効A」なども対象になる）"],
+    ["LET","nという名前でCOUNTIFSの結果（件数）を一時保存し、後ろのIFで再利用する"],
+    ["IF(n=0,\"\",n)","件数が0件なら空白を表示し、1件以上ならその件数をそのまま表示する。集計表で「0」を目立たせたくないときの定番パターン"],
+  ]},
+];
+
+// コールセンターKPI分析（想定列：A=着信時刻, B=オペレーター, D=ステータス[応答/放棄], E=応答時間(秒), F=処理時間(秒), G=後処理時間(秒), H=ログイン時間(秒), I=対応結果, J=再架電区分）
+const CALLCENTER_KPI = [
+ {title:"応答率（Answer Rate）",
+  formula:`=COUNTIFS($D:$D,"応答")/COUNTA($D2:$D1000)`,
+  desc:"ステータス列（D列）が「応答」の件数 ÷ 全件数（入電件数）で応答率を算出する。セルの表示形式を「％」にして使う。",
+  legend:[
+    ["COUNTIFS","ステータスが「応答」の件数を条件付きでカウント"],
+    ["COUNTA","対象範囲の入力済み件数（＝入電した全件数）を取得"],
+    ["÷（割合化）","応答件数を全体件数で割ってパーセンテージにする"],
+  ]},
+ {title:"放棄率（Abandonment Rate）",
+  formula:`=COUNTIFS($D:$D,"放棄")/COUNTA($D2:$D1000)`,
+  desc:"ステータス列が「放棄」（応答される前に切れた）の件数 ÷ 全件数。応答率と対になる指標で、応答率＋放棄率＝ほぼ100%になるように運用する。",
+  legend:[
+    ["COUNTIFS","ステータスが「放棄」の件数をカウント"],
+    ["COUNTA","入電した全件数を取得"],
+  ]},
+ {title:"平均処理時間 AHT（Average Handle Time）",
+  formula:`=TEXT(AVERAGEIFS($F:$F,$D:$D,"応答")/86400,"[hh]:mm:ss")`,
+  desc:"応答できた件数だけを対象に、処理時間（秒、F列）の平均を求め、86400（1日の秒数）で割ってから時刻表示形式に変換する。通話時間＋後処理時間を合計した列をFに用意すればAHTそのものになる。",
+  legend:[
+    ["AVERAGEIFS","応答した通話だけを対象に処理時間（秒）の平均を計算"],
+    ["÷86400","秒数を「1日を1とした時刻のシリアル値」に変換する（時刻形式で表示するための下準備）"],
+    ["TEXT( … ,\"[hh]:mm:ss\")","24時間を超えてもズレない時刻形式（[hh]）で「時:分:秒」表示にする"],
+  ]},
+ {title:"SLA達成率（応答時間◯秒以内の割合）",
+  formula:`=COUNTIFS($D:$D,"応答",$E:$E,"<=20")/COUNTIFS($D:$D,"応答")`,
+  desc:"応答時間（秒、E列）が20秒以内で応答できた件数 ÷ 応答できた全件数。「20秒以内に80%応答」のようなSLA基準の達成状況をそのまま数値で確認できる。",
+  legend:[
+    ["COUNTIFS（分子）","応答済みかつ応答時間が20秒以内の件数をカウント"],
+    ["COUNTIFS（分母）","応答できた件数全体をカウント"],
+    ["基準値の変更","\"<=20\"の数字を変えるだけで自社のSLA基準（15秒・30秒等）に調整できる"],
+  ]},
+ {title:"稼働率／占有率（Occupancy Rate）",
+  formula:`=(SUM($F:$F)+SUM($G:$G))/SUM($H:$H)`,
+  desc:"通話時間（F列）＋後処理時間（G列）の合計 ÷ ログイン時間（H列）の合計で、オペレーターが実際に対応業務に使っていた時間の割合（占有率）を算出する。",
+  legend:[
+    ["SUM($F:$F)+SUM($G:$G)","通話時間と後処理時間（ACW）を合計した「実対応時間」"],
+    ["SUM($H:$H)","ログインしていた合計時間（＝稼働できた時間）"],
+    ["÷（占有率）","実対応時間 ÷ ログイン時間。低すぎると待機過多、高すぎると休憩不足のサインになる"],
+  ]},
+ {title:"一次解決率 FCR（First Call Resolution）",
+  formula:`=COUNTIFS($I:$I,"解決",$J:$J,"初回")/COUNTIFS($J:$J,"初回")`,
+  desc:"対応結果（I列）が「解決」かつ、再架電区分（J列）が「初回」の件数 ÷ 初回対応件数全体。1回の対応で解決できた割合が分かり、応対品質・顧客満足度の代表的な指標として使われる。",
+  legend:[
+    ["COUNTIFS（分子）","初回対応かつ「解決」で完了した件数をカウント"],
+    ["COUNTIFS（分母）","初回対応の件数全体をカウント"],
+  ]},
+];
+
+// 正規表現 早見表
+const REGEX_PATTERNS = [
+ ["^確認：済み$","確認：済み","確認：済みです／ABC確認：済み","完全一致"],
+ ["確認：済み","確認：済み","本日確認：済み／確認：済みです","含まれていればOK"],
+ ["^確認：済み","確認：済み","本日確認：済みです","行頭のみ"],
+ ["確認：済み$","確認：済み","本日確認：済み","行末のみ"],
+ ["(^| )確認：済み( |$)","確認：済み／A 確認：済み B","確認：済みです","単語境界の代わり（前後がスペースまたは文頭・文末）"],
+ ["(^|[\\n\\r])確認：済み($|[\\n\\r])","確認：済み（改行単位で完全一致）","本日確認：済み","改行単位で探す"],
+ ["【確認】.*済み","【確認】済み／【確認】本日済み","—","特定文字の後ろ（何か挟んでもOK）"],
+ ["^担当：","担当：田中","営業担当：田中","行頭が特定文字"],
+];
+const REGEX_SYMBOLS = [
+ ["^文字","文字で始まる"],["文字$","文字で終わる"],["^文字$","完全一致"],["A|B","AまたはB"],
+ [".","任意の1文字"],[".*","任意の文字列"],["[0-9]","数字1文字"],["[A-Z]","英大文字1文字"],
+ ["[^0-9]","数字以外"],["[\\n\\r]","改行"],["文字.+","文字の後に何か続く"],[".+文字","文字の前に何かある"],
+];
+const REGEX_OPS = [
+ ['"=●"',"●と等しい"],['"<>●"',"●と等しくない"],['">10"',"10より大きい"],['">=10"',"10以上"],
+ ['"<10"',"10より小さい"],['"<=10"',"10以下"],['""',"空白"],['"<>"',"空白以外"],
+];
+const REGEX_FUNCS = [
+ ["REGEXMATCH()","一致判定（TRUE/FALSE）","IF、FILTER、ARRAYFORMULA、SUMPRODUCTと組み合わせ"],
+ ["REGEXEXTRACT()","一致した文字を取り出す",""],
+ ["REGEXREPLACE()","一致した文字を置換する",""],
+];
+
+// ショートカットキー
+const SHORTCUTS = [
+ {group:"① 移動・シート操作",rows:[["行の先頭へ移動","Home"],["行の末尾へ移動","End"],["シートの先頭へ移動","Ctrl + Home"],["シートの末尾へ移動","Ctrl + End"],["アクティブセルを画面内に表示","Ctrl + Backspace"],["次のシートへ移動","Alt + ↓"],["前のシートへ移動","Alt + ↑"],["シート一覧を表示","Alt + Shift + K"],["セルを検索し移動","Ctrl + J"],["データ範囲の端まで移動","Ctrl + ↑ ↓ ← →"]]},
+ {group:"② 選択・大量データ操作",rows:[["列を選択","Ctrl + Space"],["行を選択","Shift + Space（※英数字入力でないと使えない）"],["すべて選択","Ctrl + A"],["選択範囲に同じ値・数式を入力","Ctrl + Enter"],["データ範囲の端まで選択","Ctrl + Shift + ↑ ↓ ← →"]]},
+ {group:"③ コピー・貼り付け・編集",rows:[["コピー","Ctrl + C"],["切り取り","Ctrl + X"],["貼り付け","Ctrl + V"],["値のみ貼り付け","Ctrl + Shift + V"],["下方向へコピー","Ctrl + D"],["右方向へコピー","Ctrl + R"],["元に戻す","Ctrl + Z"],["やり直し（直前の操作を繰り返す）","Ctrl + Y / Ctrl + Shift + Z / F4"]]},
+ {group:"④ 検索・確認",rows:[["検索","Ctrl + F"],["検索と置換","Ctrl + H"],["ショートカット一覧を表示","Ctrl + /"],["ツール検索（メニュー検索）","Alt + /"]]},
+ {group:"⑤ コメント・メモ",rows:[["コメント追加・編集","Ctrl + Alt + M"],["メモ追加・編集","Shift + F2"],["コメントスレッドを開く","Ctrl + Alt + Shift + A"]]},
+ {group:"⑥ 書式設定",rows:[["太字","Ctrl + B"],["斜体","Ctrl + I"],["下線","Ctrl + U"],["取り消し線","Alt + Shift + 5"],["リンク挿入","Ctrl + K"],["リンクを開く","Alt + Enter"],["書式を貼り付け","Ctrl + Alt + V"],["書式をクリア","Ctrl + \\"],["左揃え","Ctrl + Shift + L"],["中央揃え","Ctrl + Shift + E"],["右揃え","Ctrl + Shift + R"]]},
+ {group:"⑦ 日付・時刻・数式",rows:[["今日の日付を入力","Ctrl + :"],["現在時刻を入力","Ctrl + Shift + :"],["数式バーを展開・縮小","Ctrl + Shift + U"]]},
+ {group:"⑧ 列・行の追加・削除",rows:[["追加","Ctrl + ＋"],["削除","Ctrl + ー"]]},
+ {group:"番外：Excelで2画面表示したい時",rows:[["2画面表示メニューを開く","Alt → W → N"]]},
+];
+
+// PC高速化コマンド
+const COMMANDS = [
+ {name:"システムファイルの破損チェック・修復（DISM & SFC）",cmd:"dism /online /cleanup-image /restorehealth\nsfc /scannow",effect:"OSの不具合や速度低下の原因となるシステム破損を治す。コマンド2（sfc /scannow）だけでもOK。",note:"管理者権限で実行"},
+ {name:"ディスククリーンアップ（自動）",cmd:"cleanmgr",effect:"一時ファイルやゴミ箱の不要データを自動で一括削除。"},
+ {name:"DNSキャッシュのクリア",cmd:"ipconfig /flushdns",effect:"ネット接続の不安定さを解消。"},
+ {name:"CPU・メモリの状態を確認",cmd:`$c=Get-Counter '\\Processor(_Total)\\% Processor Time','\\Memory\\% Committed Bytes In Use','\\PhysicalDisk(_Total)\\% Disk Time';"CPU: {0}% / メモリ: {1}% / ディスク: {2}%" -f [math]::Round($c.CounterSamples[0].CookedValue,1),[math]::Round($c.CounterSamples[1].CookedValue,1),[math]::Round($c.CounterSamples[2].CookedValue,1)`,effect:"CPU・メモリ・ディスクの使用率を確認（PowerShell）。"},
+ {name:"ディスクのエラーを確認",cmd:"chkdsk C: /scan",effect:"Windowsを起動したまま、Cドライブのエラーを確認。"},
+];
+const COMMAND_STEPS = ["🔍検索でCMDと入力","「管理者として実行」をクリック","ポップアップが表示されたら「はい」をクリック","コマンドを入力"];
+const TEMP_STEPS = ["Windowsキー＋Rを押す","名前に %temp% を入力","Ctrl＋Aで全選択","Deleteキーで削除","開いているアプリケーションがある場合はポップアップが出る →「すべての項目にこれを実行する(A)」にチェックを入れて「スキップ(S)」を選択","ごみ箱の中に入るため、ごみ箱からも削除しておく（ホーム画面のごみ箱を右クリック→「ごみ箱を空にする」→全て削除）"];
+const STARTUP_STEPS = ["Ctrl + Shift + Esc を押す","「タスクマネージャー」を開く","「スタートアップアプリ」を選ぶ","使っていないものを「無効化」（※セキュリティソフトやWindows関連のものは無効にしない）"];
+
+// Excel使用時の注意点（互換性）
+const EXCEL_COMPAT = [
+ ["REGEXEXTRACT","正規表現でパターン抽出","Excelに正規表現関数はありません。TEXTBEFORE・TEXTAFTER（Excel 2021/365）やFIND・SEARCH・MIDの組み合わせで代替。複雑な場合はPower Queryを使用"],
+ ["REGEXMATCH","正規表現で条件判定","ISNUMBER(SEARCH(...)) で部分一致判定に代替できる場合が多い"],
+ ["REGEXREPLACE","正規表現で置換","SUBSTITUTE関数（完全一致の置換）で代替。パターン置換が必要な場合はPower Queryを使用"],
+ ["QUERY","SQL風に抽出・集計","Power Query（データタブ→データの取得と変換）でほぼ同じことが可能。簡易なものはSUMIFS・FILTER・SORTの組み合わせで代替"],
+ ["IMPORTRANGE","別ファイルのデータを取得","外部ブック参照（='[ファイル名.xlsx]シート名'!A1）またはPower Queryの「他のブックから取得」機能を使用"],
+ ["ARRAYFORMULA","1つの式を全行に一括適用","Excel 365は「スピル」機能により、範囲を指定した式が自動で複数セルに展開されるため基本的に不要"],
+ ["TRANSLATE","セルの文章を自動翻訳","校閲タブの「翻訳」機能（選択範囲を翻訳）を使用。関数としては存在しない"],
+];
+
+// はじめての方へ（ガイド用データ）
+const GUIDE_STEPS = [
+ {title:"関数を使いたいセルをクリックして選ぶ",desc:"表の中の1つのマス目（セル）を選びます。選ぶと枠が太く表示されます。"},
+ {title:"半角で「=（イコール）」を入力する",desc:"必ず半角で入力します。全角の「＝」だとエラーになるので、入力モードを半角英数（キーボード右上の「半角/全角」キーなど）にしておきましょう。"},
+ {title:"関数名と、必要な情報（引数）を入力する",desc:"例：<code>=SUM(A1:A10)</code> のように、関数名のあとの括弧の中に対象のセルや条件を書きます。このサイトの「数式例」をそのままコピーして使うと入力ミスを防げます。"},
+ {title:"Enterキーを押す",desc:"入力が終わったらEnterキーを押すと、セルに計算結果が表示されます。"},
+ {title:"入力した数式を確認したいときは、もう一度そのセルをクリックする",desc:"画面上部の「数式バー」という場所に、今入力した数式がそのまま表示されます。結果ではなく数式そのものを見たいときはここを確認します。"},
+];
+const GUIDE_TERMS = [
+ {term:"セル",desc:"表の中の1つのマス目のこと。「A1」のように、列のアルファベットと行の数字を組み合わせて位置を表す"},
+ {term:"範囲",desc:"複数のセルをまとめて指定すること。例：「A1:A10」はA1からA10までのセルすべてを指す"},
+ {term:"シート",desc:"1つのファイルの中にある「ページ」のようなもの。画面下のタブをクリックして切り替える"},
+ {term:"数式バー",desc:"セルを選んだときに画面上部に表示される、入力した数式そのものが確認できる場所"},
+ {term:"引数（ひきすう）",desc:"関数に渡す「材料」のこと。関数名のあとの括弧()の中に書く値や範囲のこと"},
+ {term:"列・行",desc:"縦の並びが「列」（A, B, C…）、横の並びが「行」（1, 2, 3…）。セルの位置は「列＋行」で表す（例：B3）"},
+ {term:"参照",desc:"「A1」のように、他のセルの値を指し示すこと。参照先のセルの値が変わると、数式の結果も自動で変わる"},
+ {term:"半角／全角",desc:"数式は必ず半角で入力する。日本語入力がONのままだと全角になりエラーの原因になりやすい"},
+];
+const GUIDE_LABELS = [
+ {label:"構文",desc:"関数の「書き方の型」。実際に入力するときは、この形に沿って値やセルを当てはめる"},
+ {label:"数式例",desc:"実際に入力する具体的な数式のサンプル。右上の「コピー」ボタンでそのままコピーできる"},
+ {label:"仕組み",desc:"その関数が内部でどんな処理をしているかの説明"},
+ {label:"ポイント",desc:"覚えておくと得する特徴"},
+ {label:"注意",desc:"使うときに気をつけたいこと・よくある失敗"},
+ {label:"用途／使う場面",desc:"どんな目的・どんな具体的なケースで使われるか"},
+ {label:"メリット／デメリット",desc:"その関数の良いところ・気をつけたいところ"},
+ {label:"大量データ",desc:"データの件数が多いときの動作の軽さ。◎が一番軽く快適、×は重くなりやすい・使えない"},
+ {label:"「Sheets専用」バッジ",desc:"Googleスプレッドシートだけで使える関数。Excelに入力すると使えないので注意（詳しくは「Excel使用時の注意点」ページへ）"},
+ {label:"「Excel/Sheets共通」バッジ",desc:"ExcelとGoogleスプレッドシートのどちらでも使える関数"},
+];
+const GUIDE_ERRORS = [
+ ["#NAME?","関数名の書き方が間違っている、または今使っているソフトでは使えない関数（例：Excelでスプレッドシート専用の関数を使った）"],
+ ["#REF!","参照していたセルが削除された、または参照範囲が壊れている"],
+ ["#DIV/0!","0で割り算をしてしまっている（対象データが0件の場合などによく起きる）"],
+ ["#N/A","検索した値が見つからない（VLOOKUP・XLOOKUP・MATCHなどでよく出る）"],
+ ["#VALUE!","文字列と数値を組み合わせるなど、計算できない値を計算しようとしている"],
+];
+
+/* =========================================================
+   RENDER HELPERS
+   ========================================================= */
+const esc = s => (s===undefined||s===null)?"":String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+
+function highlightFormula(f){
+  // tokenize-ish highlighter: strings, function-names(before "("), numbers, refs
+  let out = esc(f);
+  out = out.replace(/&quot;/g,'"');
+  out = out.replace(/"([^"]*)"/g, m => `<span class="cs">${m}</span>`);
+  out = out.replace(/\b([A-Z][A-Z0-9_]*)\(/g, (m,fn)=>`<span class="cf">${fn}</span>(`);
+  out = out.replace(/\b(\d+(\.\d+)?)\b/g, m=>`<span class="cn">${m}</span>`);
+  out = out.replace(/\b([A-Z]{1,3}\$?\d+(:\$?[A-Z]{1,3}\$?\d*)?|\$?[A-Z]{1,3}:\$?[A-Z]{1,3})\b/g, m=>{
+    if(/^<span/.test(m)) return m;
+    return `<span class="cr">${m}</span>`;
+  });
+  return out;
+}
+
+function meterHtml(sym){
+  const lv = meterLevel(sym||"");
+  let dots="";
+  for(let i=1;i<=4;i++) dots += `<i class="${i<=lv?'on':''}"></i>`;
+  return `<div style="display:flex;align-items:center;"><div class="meter">${dots}</div><span class="meter-label">${esc(sym)}</span></div>`;
+}
+
+function usageBox(u){
+  if(!u) return "";
+  const li = arr => `<ul>${(arr||[]).map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`;
+  return `<div class="usage-box">
+    <div class="usage-row"><div class="k">用途</div><div class="v">${esc(u.purpose||"")}</div></div>
+    ${u.scenario&&u.scenario.length?`<div class="usage-row"><div class="k">使う場面</div><div class="v">${li(u.scenario)}</div></div>`:""}
+    <div class="usage-row"><div class="k">メリット</div><div class="v">${li(u.merit)}</div></div>
+    <div class="usage-row"><div class="k">デメリット</div><div class="v">${li(u.demerit)}</div></div>
+    <div class="usage-row"><div class="k">大量データ</div><div class="v">${meterHtml(u.bigdata)}</div></div>
+  </div>`;
+}
+
+function fnCard(fn){
+  const extra = fn.extra ? `
+    <div class="section-block" style="margin-top:0;box-shadow:none;padding:14px 16px;background:var(--surface-2);border-style:dashed;">
+      <h3 style="font-size:13px;"><span class="bar"></span>${esc(fn.extra.title)}</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        ${fn.extra.examples.map(e=>`
+          <div>
+            <div class="codeblock" style="margin-top:0;"><span class="formula">${highlightFormula(e.formula)}</span></div>
+            <div style="font-size:12.5px;color:var(--ink-muted);margin-top:6px;">${esc(e.desc)}</div>
+          </div>`).join("")}
+      </div>
+    </div>` : "";
+  return `<article class="fn-card" id="fn-${fn.id}" data-fn="${fn.id}">
+    <div class="fn-card-head">
+      <div>
+        <div class="fn-name">${esc(fn.name)}</div>
+        <div class="fn-oneliner">${esc(fn.oneliner)}　<span class="mono" style="color:var(--ink-faint);font-size:12px;">${esc(fn.syntax)}</span></div>
+      </div>
+      <div class="fn-badges">
+        ${fn.sheetsOnly?'<span class="badge badge-sheets">Sheets専用</span>':'<span class="badge badge-excel">Excel/Sheets共通</span>'}
+      </div>
+    </div>
+    <div class="codeblock">
+      <button class="copy-btn" data-copy="${esc(fn.formula)}">コピー</button>
+      <div class="formula">${highlightFormula(fn.formula)}</div>
+      ${fn.formulaNote?`<div class="note">${esc(fn.formulaNote)}</div>`:""}
+    </div>
+    ${fn.excelNote?`<div style="margin-top:10px;font-size:12.5px;color:var(--warn);">⚠ ${esc(fn.excelNote)}</div>`:""}
+    <div class="fn-body">
+      <div class="fn-main-col">
+        <div>
+          <div class="field-label"><span class="bar"></span>仕組み</div>
+          <div class="field-body">${esc(fn.mechanism)}</div>
+        </div>
+        <div>
+          <div class="field-label"><span class="bar"></span>ポイント</div>
+          <ul class="bullets">${fn.points.map(p=>`<li>${esc(p)}</li>`).join("")}</ul>
+        </div>
+        <div>
+          <div class="field-label" style="color:var(--warn);"><span class="bar" style="background:var(--warn);"></span>注意</div>
+          <ul class="bullets cautions">${fn.cautions.map(p=>`<li>${esc(p)}</li>`).join("")}</ul>
+        </div>
+      </div>
+      <div class="fn-side-col">
+        ${usageBox(fn.usage)}
+      </div>
+    </div>
+    ${extra}
+  </article>`;
+}
+
+const CMP_ROWS = [
+ ["複数件取得","○","×","×","×","◎"],
+ ["先頭1件取得","△","○","○","○","○"],
+ ["複数条件","○","○","△","○","◎"],
+ ["左方向検索","○","○","○","○","○"],
+ ["式の短さ","○","△","△","◎","△"],
+ ["処理速度","△","○","◎","○","○"],
+ ["一覧抽出","◎","×","×","×","◎"],
+ ["並び替え","×","×","×","×","◎"],
+ ["集計(GROUP BY)","×","×","×","×","◎"],
+ ["SQL風の記述","×","×","×","×","◎"],
+ ["学習コスト","◎","○","△","◎","△"],
+];
+
+function renderCategory(catId){
+  const meta = CATEGORY_META.find(c=>c.id===catId);
+  const fns = FUNCTIONS.filter(f=>f.cat===catId);
+  let head = `<div class="page-head">
+    <div class="eyebrow"><span class="dot"></span>関数リファレンス</div>
+    <h1 class="page-title">${esc(meta.label)}</h1>
+    <div class="page-desc">${fns.length}件の関数を掲載</div>
+  </div>`;
+  let cmpTable = "";
+  if(catId==="search"){
+    cmpTable = `<div class="tablewrap" style="margin-bottom:18px;">
+      <table class="cmp">
+        <thead><tr><th>項目</th><th>FILTER</th><th>INDEX+FILTER</th><th>INDEX+MATCH</th><th>XLOOKUP</th><th>QUERY</th></tr></thead>
+        <tbody>${CMP_ROWS.map(r=>`<tr><td class="rowh">${esc(r[0])}</td><td class="rank">${esc(r[1])}</td><td class="rank">${esc(r[2])}</td><td class="rank">${esc(r[3])}</td><td class="rank">${esc(r[4])}</td><td class="rank">${esc(r[5])}</td></tr>`).join("")}</tbody>
+      </table>
+    </div>`;
+  }
+  return head + cmpTable + `<div class="fn-grid">${fns.map(fnCard).join("")}</div>`;
+}
+
+function renderGuide(){
+  return `<div class="page-head">
+    <div class="eyebrow"><span class="dot"></span>はじめに</div>
+    <h1 class="page-title">はじめての方へ</h1>
+    <div class="page-desc">関数やスプレッドシートを初めて触る方向けの使い方ガイドです。まずはここから読み進めてみてください。分からない言葉が出てきたら、下の「よく出てくる用語集」を見返せば大丈夫です。</div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="bar"></span>そもそも「関数」って何？</h3>
+    <div class="field-body" style="font-size:13.6px;">
+      関数とは、ひとことで言うと「決まった計算や作業を、自動でやってくれる仕組み」のことです。<br>
+      たとえば「合計を出す」「条件に合うものだけ数える」といった作業を、毎回自分で計算するのではなく、<code style="background:var(--code-bg);border:1px solid var(--code-border);border-radius:5px;padding:1px 6px;color:var(--code-fn);">=SUM(A1:A10)</code> のように書くだけでソフトが自動でやってくれます。関数名（SUM・IFなど）は「何をする命令か」を表す名前で、必ず半角の「＝」から書き始めます。
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="bar"></span>実際にセルへ入力してみよう</h3>
+    <div class="step-list">
+      ${GUIDE_STEPS.map((s,i)=>`<div class="step-item">
+        <div class="stepnum">${i+1}</div>
+        <div class="stepbody">
+          <div class="stitle">${esc(s.title)}</div>
+          <div class="sdesc">${s.desc}</div>
+        </div>
+      </div>`).join("")}
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17v.01M12 8v5M12 3l9 16H3z"/></svg>
+      <div><b>コツ：</b>このサイトに載っている数式は、カードの右上にある「コピー」ボタンを押せばそのままコピーできます。手で入力するより、コピーして貼り付ける方が入力ミスを防げます。</div>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="bar"></span>このサイトの読み方</h3>
+    <div class="field-body" style="margin-bottom:12px;font-size:13.3px;color:var(--ink-muted);">関数のページには、1つの関数につき色々な項目が書かれています。それぞれ何を意味しているか確認しておきましょう。</div>
+    <div class="feature-list">
+      ${GUIDE_LABELS.map(g=>`<div class="feature-row"><div class="fname">${esc(g.label)}</div><div class="fdesc">${esc(g.desc)}</div></div>`).join("")}
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="bar"></span>よく出てくる用語集</h3>
+    <div class="glossary-grid">
+      ${GUIDE_TERMS.map(t=>`<div class="glossary-card"><div class="gterm">${esc(t.term)}</div><div class="gdesc">${esc(t.desc)}</div></div>`).join("")}
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="bar"></span>困ったときは（よくあるエラー）</h3>
+    <div class="field-body" style="margin-bottom:12px;font-size:13.3px;color:var(--ink-muted);">数式を入力してセルが赤い文字になっても、慌てなくて大丈夫です。まずは以下のエラーの意味を確認し、括弧の数や「"」（ダブルクォート）の数が合っているかを見直してみましょう。</div>
+    <div class="tablewrap"><table class="ref errtable">
+      <thead><tr><th style="width:120px;">エラー表示</th><th>意味</th></tr></thead>
+      <tbody>${GUIDE_ERRORS.map(e=>`<tr><td class="errcode">${esc(e[0])}</td><td>${esc(e[1])}</td></tr>`).join("")}</tbody>
+    </table></div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="bar"></span>次に読むには</h3>
+    <div class="field-body" style="font-size:13.3px;">
+      準備ができたら、左側の「関数リファレンス」から気になるカテゴリを選んでみましょう。何を探せばいいか分からないときは、左上の検索窓に「合計」「重複」「日付」のようなキーワードを入れて探すのもおすすめです。
+    </div>
+  </div>`;
+}
+
+function renderHandy(){
+  return `<div class="page-head">
+    <div class="eyebrow"><span class="dot"></span>関数リファレンス</div>
+    <h1 class="page-title">あると便利な関数・機能</h1>
+    <div class="page-desc">既存シートにない実務関数・便利機能。TEXTJOIN・UNIQUE・SORT・条件付き書式など。</div>
+  </div>
+  <div class="section-block">
+    <h3><span class="bar"></span>文字列処理・集計・条件分岐の便利関数</h3>
+    <div class="tip-grid">
+      ${HANDY_TIPS.map(t=>`<div class="tip-card">
+        <div class="tip-name">${esc(t.name)}</div>
+        <div class="tip-formula">${highlightFormula(t.formula)}</div>
+        <div class="tip-desc">${esc(t.desc)}</div>
+        <div class="tip-use">💼 ${esc(t.use)}</div>
+      </div>`).join("")}
+    </div>
+  </div>
+  <div class="section-block">
+    <h3><span class="bar"></span>業務効率化の機能</h3>
+    <div class="feature-list">
+      ${HANDY_FEATURES.map(f=>`<div class="feature-row"><div class="fname">${esc(f.name)}</div><div class="fdesc">${esc(f.desc)}</div></div>`).join("")}
+    </div>
+  </div>`;
+}
+
+function renderApplied(){
+  return `<div class="page-head">
+    <div class="eyebrow"><span class="dot"></span>実践ガイド</div>
+    <h1 class="page-title">★応用編（組み合わせ実例）</h1>
+    <div class="page-desc">複数の関数を組み合わせた、実務でよく使う数式パターンの分解解説。</div>
+  </div>
+  ${APPLIED.map((a,i)=>`<div class="applied-card">
+    <div class="applied-title"><span class="num">例${i+1}</span>${esc(a.title)}</div>
+    <div class="codeblock">
+      <button class="copy-btn" data-copy="${esc(a.formula)}">コピー</button>
+      <div class="formula">${highlightFormula(a.formula)}</div>
+    </div>
+    <div class="applied-desc">${esc(a.desc)}</div>
+    <div class="legend">
+      ${a.legend.map(l=>`<div class="legend-item"><span class="term">${esc(l[0])}</span><span class="exp">${esc(l[1])}</span></div>`).join("")}
+    </div>
+  </div>`).join("")}`;
+}
+
+function renderCallCenter(){
+  return `<div class="page-head">
+    <div class="eyebrow"><span class="dot"></span>実践ガイド</div>
+    <h1 class="page-title">コールセンターKPI分析</h1>
+    <div class="page-desc">応答率・AHT・SLA達成率など、コールセンターの運用データ分析でよく使うKPI計算式。想定する列構成：A=着信時刻／B=オペレーター／D=ステータス（応答・放棄）／E=応答時間(秒)／F=処理時間(秒)／G=後処理時間(秒)／H=ログイン時間(秒)／I=対応結果／J=再架電区分（初回・再架電）。列の位置は実際のデータに合わせて読み替えてください。</div>
+  </div>
+  ${CALLCENTER_KPI.map((a,i)=>`<div class="applied-card">
+    <div class="applied-title"><span class="num">KPI${i+1}</span>${esc(a.title)}</div>
+    <div class="codeblock">
+      <button class="copy-btn" data-copy="${esc(a.formula)}">コピー</button>
+      <div class="formula">${highlightFormula(a.formula)}</div>
+    </div>
+    <div class="applied-desc">${esc(a.desc)}</div>
+    <div class="legend">
+      ${a.legend.map(l=>`<div class="legend-item"><span class="term">${esc(l[0])}</span><span class="exp">${esc(l[1])}</span></div>`).join("")}
+    </div>
+  </div>`).join("")}`;
+}
+
+function renderExcel(){
+  return `<div class="page-head">
+    <div class="eyebrow"><span class="dot"></span>実践ガイド</div>
+    <h1 class="page-title">Excel使用時の注意点</h1>
+    <div class="page-desc">QUERY・IMPORTRANGE・ARRAYFORMULA・REGEXEXTRACT・REGEXMATCH・REGEXREPLACE・TRANSLATE はGoogleスプレッドシート専用の関数です。Excel上で実際に入力すると「#NAME?」エラーになります。Excelで同様の処理をしたい場合の代替方法は以下の通りです。</div>
+  </div>
+  <div class="tablewrap">
+    <table class="ref">
+      <thead><tr><th style="width:160px;">Sheets専用関数</th><th style="width:200px;">何をする関数か</th><th>Excelでの代替方法</th></tr></thead>
+      <tbody>${EXCEL_COMPAT.map(r=>`<tr><td class="mono" style="font-weight:600;color:var(--tag-sheets-ink);">${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join("")}</tbody>
+    </table>
+  </div>`;
+}
+
+function renderRegex(){
+  return `<div class="page-head">
+    <div class="eyebrow"><span class="dot"></span>参考資料</div>
+    <h1 class="page-title">正規表現 早見表</h1>
+    <div class="page-desc">記号の意味と使用例をまとめた早見表。REGEXMATCH・REGEXEXTRACT・REGEXREPLACEで使用。</div>
+  </div>
+  <div class="section-block">
+    <h3><span class="bar"></span>用途別パターン</h3>
+    <div class="tablewrap"><table class="ref">
+      <thead><tr><th>用途</th><th>正規表現</th><th>一致する</th><th>一致しない</th></tr></thead>
+      <tbody>${REGEX_PATTERNS.map(r=>`<tr><td>${esc(r[3])}</td><td class="mono">${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join("")}</tbody>
+    </table></div>
+  </div>
+  <div class="section-block">
+    <h3><span class="bar"></span>記号の意味</h3>
+    <div class="tablewrap"><table class="ref">
+      <thead><tr><th>記号</th><th>意味</th></tr></thead>
+      <tbody>${REGEX_SYMBOLS.map(r=>`<tr><td class="mono">${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("")}</tbody>
+    </table></div>
+  </div>
+  <div class="section-block">
+    <h3><span class="bar"></span>比較演算子（COUNTIFS等の条件式で使用）</h3>
+    <div class="tablewrap"><table class="ref">
+      <thead><tr><th>記述</th><th>意味</th></tr></thead>
+      <tbody>${REGEX_OPS.map(r=>`<tr><td class="mono">${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("")}</tbody>
+    </table></div>
+  </div>
+  <div class="section-block">
+    <h3><span class="bar"></span>関数一覧</h3>
+    <div class="tablewrap"><table class="ref">
+      <thead><tr><th>関数</th><th>用途</th><th>備考</th></tr></thead>
+      <tbody>${REGEX_FUNCS.map(r=>`<tr><td class="mono">${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join("")}</tbody>
+    </table></div>
+  </div>`;
+}
+
+function renderShortcut(){
+  return `<div class="page-head">
+    <div class="eyebrow"><span class="dot"></span>参考資料</div>
+    <h1 class="page-title">ショートカットキー一覧</h1>
+    <div class="page-desc">作業スピードを上げるキー操作集。</div>
+  </div>
+  ${SHORTCUTS.map(g=>`<div class="section-block">
+    <h3><span class="bar"></span>${esc(g.group)}</h3>
+    <div class="tablewrap"><table class="ref">
+      <tbody>${g.rows.map(r=>`<tr><td>${esc(r[0])}</td><td><span class="kbd">${esc(r[1])}</span></td></tr>`).join("")}</tbody>
+    </table></div>
+  </div>`).join("")}`;
+}
+
+function renderCommand(){
+  return `<div class="page-head">
+    <div class="eyebrow"><span class="dot"></span>参考資料</div>
+    <h1 class="page-title">PC高速化コマンド</h1>
+    <div class="page-desc">PCの動作が重い時の対処法。主な高速化コマンドは管理者権限で実行してください。</div>
+  </div>
+  <div class="section-block">
+    <h3><span class="bar"></span>主な高速化コマンド</h3>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      ${COMMANDS.map(c=>`<div>
+        <div style="font-weight:700;font-size:13.5px;">${esc(c.name)}</div>
+        <div class="codeblock" style="margin-top:8px;"><button class="copy-btn" data-copy="${esc(c.cmd)}">コピー</button><div class="formula">${esc(c.cmd)}</div></div>
+        <div style="font-size:12.8px;color:var(--ink-muted);margin-top:6px;">${esc(c.effect)}</div>
+      </div>`).join("")}
+    </div>
+    <div class="compat-flow" style="margin-top:14px;">
+      ${COMMAND_STEPS.map((s,i)=>`<span class="pill">${i+1}. ${esc(s)}</span>`).join('<span>→</span>')}
+    </div>
+  </div>
+  <div class="section-block">
+    <h3><span class="bar"></span>Tempファイル削除</h3>
+    <div class="field-body">Tempファイルは、OSやソフトウェアが作業中に一時的なデータを保存するために作成するファイル。基本的に作業が終了した後は不要のため削除してOK。放置しておくとPCの動作が重くなることがある。<br><b style="color:var(--warn);">【注意点】</b>現在開いて作業中のファイルに関連するデータは削除できない。全てのアプリケーションを閉じた状態で削除を推奨。</div>
+    <ol style="margin:12px 0 0;padding-left:20px;font-size:13px;display:flex;flex-direction:column;gap:4px;">${TEMP_STEPS.map(s=>`<li>${esc(s)}</li>`).join("")}</ol>
+  </div>
+  <div class="section-block">
+    <h3><span class="bar"></span>起動時に自動で立ち上がるアプリを減らす</h3>
+    <ol style="margin:0;padding-left:20px;font-size:13px;display:flex;flex-direction:column;gap:4px;">${STARTUP_STEPS.map(s=>`<li>${esc(s)}</li>`).join("")}</ol>
+  </div>`;
+}
+
+/* =========================================================
+   NAV / SEARCH / ROUTER
+   ========================================================= */
+const REF_RENDER = {guide:renderGuide, handy:renderHandy, applied:renderApplied, callcenter:renderCallCenter, excel:renderExcel, regex:renderRegex, shortcut:renderShortcut, command:renderCommand};
+const NAV_ICONS = {
+  guide:'<circle cx="12" cy="12" r="9"/><path d="M12 17v.01M9.5 9.2a2.5 2.5 0 114 2c-.6.6-1.5 1-1.5 2.3"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
+  agg:'<path d="M4 19V10M12 19V5M20 19v-7"/>',
+  text:'<path d="M4 6h16M4 12h10M4 18h7"/>',
+  cond:'<path d="M6 3v12a3 3 0 003 3h9M6 3L3 6M6 3l3 3"/><circle cx="18" cy="6" r="2"/>',
+  array:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
+  date:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/>',
+  handy:'<path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/>',
+  applied:'<path d="M13 2L4 14h6l-1 8 9-12h-6z"/>',
+  excel:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 9v11"/>',
+  regex:'<path d="M4 12h16M8 6l-4 6 4 6M16 6l4 6-4 6"/>',
+  shortcut:'<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h.01M11 10h.01M15 10h.01M7 14h10"/>',
+  command:'<path d="M4 17l6-6-6-6M12 19h8"/>',
+  callcenter:'<path d="M4 20V13M10 20V7M16 20v-5M21 4L14 11l-3-3-6 6"/>',
+};
+
+let currentCat = "search";
+let searchQuery = "";
+
+function buildNav(){
+  const root = document.getElementById("navRoot");
+  const groups = {};
+  CATEGORY_META.forEach(c=>{ (groups[c.group]=groups[c.group]||[]).push(c); });
+  root.innerHTML = Object.keys(groups).map(g=>{
+    const items = groups[g].map(c=>{
+      const cnt = c.id in REF_RENDER ? "" : `<span class="cnt">${FUNCTIONS.filter(f=>f.cat===c.id).length}</span>`;
+      return `<button type="button" class="navitem" data-cat="${c.id}"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke-width="1.7">${NAV_ICONS[c.id]||""}</svg><span>${esc(c.label)}</span>${cnt}</button>`;
+    }).join("");
+    return `<div class="navgroup"><div class="navgroup-label">${esc(g)}</div>${items}</div>`;
+  }).join("");
+  root.querySelectorAll(".navitem").forEach(el=>{
+    el.addEventListener("click", ()=>{ searchQuery=""; document.getElementById("searchInput").value=""; setCategory(el.dataset.cat); closeSidebarMobile(); });
+  });
+}
+
+function setCategory(cat){
+  currentCat = cat;
+  document.querySelectorAll(".navitem").forEach(el=>el.classList.toggle("active", el.dataset.cat===cat));
+  render();
+  window.scrollTo({top:0,behavior:"instant"});
+}
+
+function matchFn(fn, q){
+  if(!q) return true;
+  const hay = [fn.name, fn.oneliner, fn.syntax, fn.mechanism, (fn.points||[]).join(" "), (fn.cautions||[]).join(" "), fn.usage&&fn.usage.purpose, (fn.usage&&fn.usage.scenario||[]).join(" ")].join(" ").toLowerCase();
+  return hay.includes(q.toLowerCase());
+}
+
+function renderSearchResults(q){
+  const results = FUNCTIONS.filter(f=>matchFn(f,q));
+  let extraHits = [];
+  const ql = q.toLowerCase();
+  HANDY_TIPS.forEach(t=>{ if((t.name+t.desc+t.use).toLowerCase().includes(ql)) extraHits.push({type:"handy",label:t.name,sub:t.desc}); });
+  APPLIED.forEach((a,i)=>{ if((a.title+a.desc).toLowerCase().includes(ql)) extraHits.push({type:"applied",label:a.title,sub:"応用編 例"+(i+1), idx:i}); });
+  CALLCENTER_KPI.forEach((a,i)=>{ if((a.title+a.desc).toLowerCase().includes(ql)) extraHits.push({type:"callcenter",label:a.title,sub:"コールセンターKPI分析", idx:i}); });
+
+  document.getElementById("searchMeta").textContent = q ? `${results.length + extraHits.length} 件ヒット` : "";
+
+  if(!results.length && !extraHits.length){
+    return `<div class="page-head"><div class="eyebrow"><span class="dot"></span>検索結果</div><h1 class="page-title">「${esc(q)}」の検索結果</h1></div>
+    <div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <div>一致する関数が見つかりませんでした</div>
+    </div>`;
+  }
+  const extraHtml = extraHits.length ? `<div class="section-block"><h3><span class="bar"></span>関連する参考資料</h3>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      ${extraHits.map(h=>`<button type="button" class="navitem" style="background:var(--surface-2);border-color:var(--border);" data-jump="${h.type}" data-idx="${h.idx||0}"><span style="font-weight:700;">${esc(h.label)}</span><span class="cnt" style="margin-left:8px;font-family:inherit;">${esc(h.sub)}</span></button>`).join("")}
+    </div></div>` : "";
+
+  return `<div class="page-head">
+    <div class="eyebrow"><span class="dot"></span>検索結果</div>
+    <h1 class="page-title">「${esc(q)}」の検索結果</h1>
+    <div class="page-desc">${results.length + extraHits.length} 件見つかりました</div>
+  </div>
+  ${extraHtml}
+  <div class="fn-grid">${results.map(fnCard).join("")}</div>`;
+}
+
+function render(){
+  const content = document.getElementById("content");
+  if(searchQuery){
+    content.innerHTML = renderSearchResults(searchQuery);
+  } else if(REF_RENDER[currentCat]){
+    content.innerHTML = REF_RENDER[currentCat]();
+  } else {
+    content.innerHTML = renderCategory(currentCat);
+  }
+  bindCopyButtons();
+  content.querySelectorAll("[data-jump]").forEach(el=>{
+    el.addEventListener("click", ()=>{
+      const type = el.dataset.jump;
+      searchQuery=""; document.getElementById("searchInput").value="";
+      setCategory(type);
+    });
+  });
+}
+
+function bindCopyButtons(){
+  document.querySelectorAll(".copy-btn").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const text = btn.dataset.copy;
+      try{
+        await navigator.clipboard.writeText(text);
+        showToast("数式をコピーしました");
+      }catch(e){
+        try{
+          const ta = document.createElement("textarea");
+          ta.value = text; ta.style.position="fixed"; ta.style.opacity="0";
+          document.body.appendChild(ta); ta.select();
+          document.execCommand("copy"); document.body.removeChild(ta);
+          showToast("数式をコピーしました");
+        }catch(e2){ showToast("コピーできませんでした"); }
+      }
+    });
+  });
+}
+
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove("show"), 1600);
+}
+
+/* search input */
+document.getElementById("searchInput").addEventListener("input", (e)=>{
+  searchQuery = e.target.value.trim();
+  document.querySelectorAll(".navitem").forEach(el=>el.classList.remove("active"));
+  render();
+});
+
+/* mobile sidebar */
+const sidebar = document.getElementById("sidebar");
+const backdrop = document.getElementById("backdrop");
+document.getElementById("menuBtn").addEventListener("click", ()=>{ sidebar.classList.add("open"); backdrop.classList.add("show"); });
+backdrop.addEventListener("click", closeSidebarMobile);
+function closeSidebarMobile(){ sidebar.classList.remove("open"); backdrop.classList.remove("show"); }
+
+/* theme toggle (light/dark, persisted per browser) */
+const THEME_KEY = "kansu-nabi-theme";
+function applyTheme(theme){
+  document.documentElement.setAttribute("data-theme", theme==="dark" ? "dark" : "light");
+  document.getElementById("themeLightBtn").classList.toggle("active", theme!=="dark");
+  document.getElementById("themeDarkBtn").classList.toggle("active", theme==="dark");
+}
+function setTheme(theme){ localStorage.setItem(THEME_KEY, theme); applyTheme(theme); }
+document.getElementById("themeLightBtn").addEventListener("click", ()=>setTheme("light"));
+document.getElementById("themeDarkBtn").addEventListener("click", ()=>setTheme("dark"));
+applyTheme(localStorage.getItem(THEME_KEY) === "dark" ? "dark" : "light");
+
+buildNav();
+setCategory("guide");
+document.getElementById("sidebarFoot").textContent = `元データ：関数.xlsx を移植 ／ 関数${FUNCTIONS.length}件＋実践ガイド・参考資料`;
+</script>
