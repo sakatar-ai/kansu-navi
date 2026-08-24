@@ -251,6 +251,8 @@ table.ref tr:last-child td{border-bottom:none;}
 
 .tip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;}
 .tip-card{border:1px solid var(--border);border-radius:11px;padding:13px 15px;background:var(--surface);}
+.tip-card .tip-head{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.tip-card .tip-head .copy-btn{align-self:center;}
 .tip-card .tip-name{font-family:"JetBrains Mono";font-weight:600;font-size:14px;color:var(--accent-ink);}
 .tip-card .tip-formula{font-family:"JetBrains Mono";font-size:12px;color:var(--ink-muted);margin-top:4px;word-break:break-all;}
 .tip-card .tip-desc{font-size:12.8px;margin-top:6px;}
@@ -1311,7 +1313,10 @@ function renderHandy(){
     <h3><span class="bar"></span>文字列処理・集計・条件分岐の便利関数</h3>
     <div class="tip-grid">
       ${HANDY_TIPS.map(t=>`<div class="tip-card">
-        <div class="tip-name">${esc(t.name)}</div>
+        <div class="tip-head">
+          <div class="tip-name">${esc(t.name)}</div>
+          <button class="copy-btn" data-copy="${escAttr(t.formula)}">コピー</button>
+        </div>
         <div class="tip-formula">${highlightFormula(t.formula)}</div>
         <div class="tip-desc">${esc(t.desc)}</div>
         <div class="tip-use">💼 ${esc(t.use)}</div>
