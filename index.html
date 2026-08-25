@@ -625,6 +625,25 @@ const FUNCTIONS = [
    demerit:["正規表現の知識が必要","式を見ただけでは分かりにくい","処理内容によっては重い","保守担当者が理解しづらい場合がある"],
    bigdata:"○（数千行程度なら実用的。複雑な正規表現は負荷増加。ARRAYFORMULAやMAPとの併用時は注意。全列参照は避けた方がよい）"}},
 
+{id:"name-clean",cat:"text",name:"氏名のふりがな・空白除去（IF+REGEXREPLACE+SUBSTITUTE）",sheetsOnly:true,
+ syntax:'IF(セル="","",SUBSTITUTE(SUBSTITUTE(REGEXREPLACE(セル,"[\\(（].*$","")," ",""),"　",""))',
+ oneliner:"氏名データから括弧書きのふりがなと空白（半角・全角）を取り除き、完全一致判定用にきれいにする",
+ formula:`=IF(F2="","",SUBSTITUTE(SUBSTITUTE(REGEXREPLACE(F2,"[\\(（].*$","")," ",""),"　",""))`,
+ formulaNote:"F2が空欄なら空欄のまま。値がある場合は、括弧書きのふりがな部分と半角・全角スペースを取り除いた氏名だけを返す",
+ mechanism:"①REGEXREPLACEで「(」または「（」以降の文字列（ふりがな部分）を行末まですべて削除する（閉じ括弧が無くても、開き括弧から後ろを丸ごと削除できる）→②半角スペースをSUBSTITUTEで削除→③全角スペースをSUBSTITUTEで削除→④F2が空欄の場合はIFで空欄のまま返す。",
+ points:["正規表現[\\(（]で半角「(」・全角「（」のどちらにも対応","閉じ括弧が入力し忘れられていても、開き括弧以降を丸ごと削除するため崩れない","半角・全角どちらのスペースも除去するため、表記ゆれを吸収して完全一致判定の精度が上がる"],
+ cautions:["氏名の一部として本来残したい括弧（旧字体の注記など）も一律削除されてしまう","REGEXREPLACEはGoogleスプレッドシート専用関数（Excelでは使えない）"],
+ usage:{purpose:"氏名データのクレンジング（完全一致判定用の正規化）",scenario:["ふりがな付きの氏名データを、他システムの氏名（ふりがな・空白なし）と突合する前処理","重複チェックや名寄せ前の表記統一"],
+   merit:["半角/全角の表記ゆれ、ふりがなの有無を一括で吸収できる","閉じ括弧の入力漏れにも強い"],demerit:["本来残したい括弧内の情報も一律削除される","正規表現の記述がやや難しい"],bigdata:"○"},
+ exampleTable:[
+   ["田中太郎","田中太郎"],
+   ["田中 太郎","田中太郎"],
+   ["田中 太郎(たなか たろう)","田中太郎"],
+   ["田中 太郎（たなか たろう）","田中太郎"],
+   ["田中 太郎(たなか たろう","田中太郎"],
+   ["田中 太郎（たなか たろう","田中太郎"],
+ ]},
+
 // ---------------- 条件分岐・エラー処理系 ----------------
 {id:"if",cat:"cond",name:"IF",sheetsOnly:false,
  syntax:"IF(条件, 真の場合, 偽の場合)",
@@ -1143,6 +1162,7 @@ function fnCard(fn){
       <div class="formula">${highlightFormula(fn.formula)}</div>
       ${fn.formulaNote?`<div class="note">${esc(fn.formulaNote)}</div>`:""}
     </div>
+    ${fn.exampleTable?`<div class="tablewrap" style="margin-top:10px;"><table class="ref"><thead><tr><th>入力例</th><th>結果</th></tr></thead><tbody>${fn.exampleTable.map(row=>`<tr><td class="mono">${esc(row[0])}</td><td class="mono">${esc(row[1])}</td></tr>`).join("")}</tbody></table></div>`:""}
     ${fn.excelNote?`<div style="margin-top:10px;font-size:12.5px;color:var(--warn);">⚠ ${esc(fn.excelNote)}</div>`:""}
     <div class="fn-body">
       <div class="fn-main-col">
