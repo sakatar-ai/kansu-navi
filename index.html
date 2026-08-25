@@ -386,7 +386,6 @@ const CATEGORY_META = [
   {id:"phone",    label:"電話番号処理",       group:"関数リファレンス"},
   {id:"handy",    label:"あると便利な関数",   group:"関数リファレンス"},
   {id:"applied",  label:"★応用編（組み合わせ実例）", group:"実践ガイド"},
-  {id:"callcenter", label:"コールセンターKPI分析", group:"実践ガイド"},
   {id:"aiprompt", label:"【AIに関数を質問する時の例文】", group:"実践ガイド"},
   {id:"excel",    label:"Excel使用時の注意点", group:"実践ガイド"},
   {id:"regex",    label:"正規表現 早見表",     group:"参考資料"},
@@ -936,56 +935,6 @@ const APPLIED = [
   ]},
 ];
 
-// コールセンターKPI分析（想定列：A=着信時刻, B=オペレーター, D=ステータス[応答/放棄], E=応答時間(秒), F=処理時間(秒), G=後処理時間(秒), H=ログイン時間(秒), I=対応結果, J=再架電区分）
-const CALLCENTER_KPI = [
- {title:"応答率（Answer Rate）",
-  formula:`=COUNTIFS($D:$D,"応答")/COUNTA($D2:$D1000)`,
-  desc:"ステータス列（D列）が「応答」の件数 ÷ 全件数（入電件数）で応答率を算出する。セルの表示形式を「％」にして使う。",
-  legend:[
-    ["COUNTIFS","ステータスが「応答」の件数を条件付きでカウント"],
-    ["COUNTA","対象範囲の入力済み件数（＝入電した全件数）を取得"],
-    ["÷（割合化）","応答件数を全体件数で割ってパーセンテージにする"],
-  ]},
- {title:"放棄率（Abandonment Rate）",
-  formula:`=COUNTIFS($D:$D,"放棄")/COUNTA($D2:$D1000)`,
-  desc:"ステータス列が「放棄」（応答される前に切れた）の件数 ÷ 全件数。応答率と対になる指標で、応答率＋放棄率＝ほぼ100%になるように運用する。",
-  legend:[
-    ["COUNTIFS","ステータスが「放棄」の件数をカウント"],
-    ["COUNTA","入電した全件数を取得"],
-  ]},
- {title:"平均処理時間 AHT（Average Handle Time）",
-  formula:`=TEXT(AVERAGEIFS($F:$F,$D:$D,"応答")/86400,"[hh]:mm:ss")`,
-  desc:"応答できた件数だけを対象に、処理時間（秒、F列）の平均を求め、86400（1日の秒数）で割ってから時刻表示形式に変換する。通話時間＋後処理時間を合計した列をFに用意すればAHTそのものになる。",
-  legend:[
-    ["AVERAGEIFS","応答した通話だけを対象に処理時間（秒）の平均を計算"],
-    ["÷86400","秒数を「1日を1とした時刻のシリアル値」に変換する（時刻形式で表示するための下準備）"],
-    ["TEXT( … ,\"[hh]:mm:ss\")","24時間を超えてもズレない時刻形式（[hh]）で「時:分:秒」表示にする"],
-  ]},
- {title:"SLA達成率（応答時間◯秒以内の割合）",
-  formula:`=COUNTIFS($D:$D,"応答",$E:$E,"<=20")/COUNTIFS($D:$D,"応答")`,
-  desc:"応答時間（秒、E列）が20秒以内で応答できた件数 ÷ 応答できた全件数。「20秒以内に80%応答」のようなSLA基準の達成状況をそのまま数値で確認できる。",
-  legend:[
-    ["COUNTIFS（分子）","応答済みかつ応答時間が20秒以内の件数をカウント"],
-    ["COUNTIFS（分母）","応答できた件数全体をカウント"],
-    ["基準値の変更","\"<=20\"の数字を変えるだけで自社のSLA基準（15秒・30秒等）に調整できる"],
-  ]},
- {title:"稼働率／占有率（Occupancy Rate）",
-  formula:`=(SUM($F:$F)+SUM($G:$G))/SUM($H:$H)`,
-  desc:"通話時間（F列）＋後処理時間（G列）の合計 ÷ ログイン時間（H列）の合計で、オペレーターが実際に対応業務に使っていた時間の割合（占有率）を算出する。",
-  legend:[
-    ["SUM($F:$F)+SUM($G:$G)","通話時間と後処理時間（ACW）を合計した「実対応時間」"],
-    ["SUM($H:$H)","ログインしていた合計時間（＝稼働できた時間）"],
-    ["÷（占有率）","実対応時間 ÷ ログイン時間。低すぎると待機過多、高すぎると休憩不足のサインになる"],
-  ]},
- {title:"一次解決率 FCR（First Call Resolution）",
-  formula:`=COUNTIFS($I:$I,"解決",$J:$J,"初回")/COUNTIFS($J:$J,"初回")`,
-  desc:"対応結果（I列）が「解決」かつ、再架電区分（J列）が「初回」の件数 ÷ 初回対応件数全体。1回の対応で解決できた割合が分かり、応対品質・顧客満足度の代表的な指標として使われる。",
-  legend:[
-    ["COUNTIFS（分子）","初回対応かつ「解決」で完了した件数をカウント"],
-    ["COUNTIFS（分母）","初回対応の件数全体をカウント"],
-  ]},
-];
-
 // 正規表現 早見表
 const REGEX_PATTERNS = [
  ["^確認：済み$","確認：済み","確認：済みです／ABC確認：済み","完全一致"],
@@ -1352,25 +1301,6 @@ function renderApplied(){
   </div>`).join("")}`;
 }
 
-function renderCallCenter(){
-  return `<div class="page-head">
-    <div class="eyebrow"><span class="dot"></span>実践ガイド</div>
-    <h1 class="page-title">コールセンターKPI分析</h1>
-    <div class="page-desc">応答率・AHT・SLA達成率など、コールセンターの運用データ分析でよく使うKPI計算式。想定する列構成：A=着信時刻／B=オペレーター／D=ステータス（応答・放棄）／E=応答時間(秒)／F=処理時間(秒)／G=後処理時間(秒)／H=ログイン時間(秒)／I=対応結果／J=再架電区分（初回・再架電）。列の位置は実際のデータに合わせて読み替えてください。</div>
-  </div>
-  ${CALLCENTER_KPI.map((a,i)=>`<div class="applied-card">
-    <div class="applied-title"><span class="num">KPI${i+1}</span>${esc(a.title)}</div>
-    <div class="codeblock">
-      <button class="copy-btn" data-copy="${escAttr(a.formula)}">コピー</button>
-      <div class="formula">${highlightFormula(a.formula)}</div>
-    </div>
-    <div class="applied-desc">${esc(a.desc)}</div>
-    <div class="legend">
-      ${a.legend.map(l=>`<div class="legend-item"><span class="term">${esc(l[0])}</span><span class="exp">${esc(l[1])}</span></div>`).join("")}
-    </div>
-  </div>`).join("")}`;
-}
-
 function stripPlaceholders(text){
   return text.replace(/｛[^｛｝]*｝/g, "｛｝");
 }
@@ -1494,7 +1424,7 @@ function renderCommand(){
 /* =========================================================
    NAV / SEARCH / ROUTER
    ========================================================= */
-const REF_RENDER = {guide:renderGuide, handy:renderHandy, applied:renderApplied, callcenter:renderCallCenter, aiprompt:renderAiPrompt, excel:renderExcel, regex:renderRegex, shortcut:renderShortcut, command:renderCommand};
+const REF_RENDER = {guide:renderGuide, handy:renderHandy, applied:renderApplied, aiprompt:renderAiPrompt, excel:renderExcel, regex:renderRegex, shortcut:renderShortcut, command:renderCommand};
 const NAV_ICONS = {
   guide:'<circle cx="12" cy="12" r="9"/><path d="M12 17v.01M9.5 9.2a2.5 2.5 0 114 2c-.6.6-1.5 1-1.5 2.3"/>',
   search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
@@ -1510,7 +1440,6 @@ const NAV_ICONS = {
   regex:'<path d="M4 12h16M8 6l-4 6 4 6M16 6l4 6-4 6"/>',
   shortcut:'<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h.01M11 10h.01M15 10h.01M7 14h10"/>',
   command:'<path d="M4 17l6-6-6-6M12 19h8"/>',
-  callcenter:'<path d="M4 20V13M10 20V7M16 20v-5M21 4L14 11l-3-3-6 6"/>',
   aiprompt:'<path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>',
 };
 
@@ -1552,7 +1481,6 @@ function renderSearchResults(q){
   const ql = q.toLowerCase();
   HANDY_TIPS.forEach(t=>{ if((t.name+t.desc+t.use).toLowerCase().includes(ql)) extraHits.push({type:"handy",label:t.name,sub:t.desc}); });
   APPLIED.forEach((a,i)=>{ if((a.title+a.desc).toLowerCase().includes(ql)) extraHits.push({type:"applied",label:a.title,sub:"応用編 例"+(i+1), idx:i}); });
-  CALLCENTER_KPI.forEach((a,i)=>{ if((a.title+a.desc).toLowerCase().includes(ql)) extraHits.push({type:"callcenter",label:a.title,sub:"コールセンターKPI分析", idx:i}); });
 
   document.getElementById("searchMeta").textContent = q ? `${results.length + extraHits.length} 件ヒット` : "";
 
