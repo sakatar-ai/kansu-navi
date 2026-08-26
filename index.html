@@ -906,7 +906,7 @@ const HANDY_TIPS = [
  {name:"PROPER・UPPER・LOWER",formula:`=UPPER(E2)`,desc:"英字の大文字・小文字を統一",use:"メールアドレスやIDの表記統一"},
  {name:"TEXTBEFORE・TEXTAFTER",formula:`=TEXTBEFORE(E2,"＠")`,desc:"指定した文字の前後の文字列を取得（Excel 2021/365）",use:"正規表現を使わずに簡単な文字抽出をしたい時"},
  {name:"TEXTSPLIT",formula:`=TEXTSPLIT(E2,"-")`,desc:"区切り文字で文字列を複数セルに分割（Excel 365）",use:"電話番号や住所の分割"},
- {name:"UNIQUE",formula:`=UNIQUE(E2:E28)`,desc:"重複を除いたリストを作成",use:"顧客リストの重複除去、対応履歴のユニーク件数確認"},
+ {name:"UNIQUE",formula:`=UNIQUE(E2:E28)`,desc:"重複を除いたリスト（一覧）をセルに書き出す関数。結果は値の並びそのもの。件数だけでよい場合はCOUNTUNIQUEを使う",use:"顧客リストの重複除去、対応履歴のユニーク一覧を作成"},
  {name:"SORT",formula:`=SORT(E2:F28,2,-1)`,desc:"関数で並び替え（元データは変更しない）",use:"元データを崩さずランキング表示したい時"},
  {name:"COUNTA",formula:`=COUNTA(E2:E28)`,desc:"空白でないセルの数を数える",use:"入力済み件数の確認"},
  {name:"COUNTBLANK",formula:`=COUNTBLANK(E2:E28)`,desc:"空白セルの数を数える",use:"入力漏れのチェック"},
@@ -915,7 +915,7 @@ const HANDY_TIPS = [
  {name:"STDEV",formula:`=STDEV(E2:E100)`,desc:"数値データの標準偏差（ばらつき）を計算",use:"オペレーターごとの処理時間のブレの大きさを比較（安定して対応できているか）"},
  {name:"MODE",formula:`=MODE(E2:E100)`,desc:"最も多く出現する値（最頻値）を取得",use:"最も多い対応時間帯・最頻の問い合わせ内容コードの特定"},
  {name:"PERCENTILE",formula:`=PERCENTILE(E2:E100,0.9)`,desc:"指定した割合（パーセンタイル）に位置する値を取得",use:"応答時間の90パーセンタイル値でSLA基準（例：90%が20秒以内）の達成状況を確認"},
- {name:"COUNTUNIQUE",formula:`=COUNTUNIQUE(E2:E100)`,desc:"重複を除いた件数（ユニーク件数）を数える",use:"ユニーク架電者数・重複を除いた対応件数の集計"},
+ {name:"COUNTUNIQUE",formula:`=COUNTUNIQUE(E2:E100)`,desc:"重複を除いた件数（ユニーク件数）を数値1つで返す関数。一覧そのものは表示しない。値の一覧が欲しい場合はUNIQUEを使う",use:"ユニーク架電者数・重複を除いた対応件数の集計"},
  {name:"SPARKLINE",formula:`=SPARKLINE(E2:P2)`,desc:"セル内に簡易グラフ（スパークライン）を表示",use:"オペレーター別の日次対応件数の推移をセル内ミニグラフで一覧表示"},
  {name:"FORECAST",formula:`=FORECAST(N1,既知のY範囲,既知のX範囲)`,desc:"過去のデータから将来の値を予測（線形予測）",use:"入電件数の将来予測、必要人員数の見積もり"},
 ];
