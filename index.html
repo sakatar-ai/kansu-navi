@@ -1298,6 +1298,32 @@ function renderGuide(){
   </div>`;
 }
 
+function tipCard(t){
+  return `<div class="tip-card">
+        <div class="tip-head">
+          <div class="tip-name">${esc(t.name)}</div>
+          <button class="copy-btn" data-copy="${escAttr(t.formula)}">コピー</button>
+        </div>
+        <div class="tip-formula">${highlightFormula(t.formula)}</div>
+        <div class="tip-desc">${esc(t.desc)}</div>
+        <div class="tip-use">💼 ${esc(t.use)}</div>
+      </div>`;
+}
+
+function appliedCard(a, i){
+  return `<div class="applied-card">
+    <div class="applied-title"><span class="num">例${i+1}</span>${esc(a.title)}</div>
+    <div class="codeblock">
+      <button class="copy-btn" data-copy="${escAttr(a.formula)}">コピー</button>
+      <div class="formula">${highlightFormula(a.formula)}</div>
+    </div>
+    <div class="applied-desc">${esc(a.desc)}</div>
+    <div class="legend">
+      ${a.legend.map(l=>`<div class="legend-item"><span class="term">${esc(l[0])}</span><span class="exp">${esc(l[1])}</span></div>`).join("")}
+    </div>
+  </div>`;
+}
+
 function renderHandy(){
   return `<div class="page-head">
     <div class="eyebrow"><span class="dot"></span>関数リファレンス</div>
@@ -1307,15 +1333,7 @@ function renderHandy(){
   <div class="section-block">
     <h3><span class="bar"></span>文字列処理・集計・条件分岐の便利関数</h3>
     <div class="tip-grid">
-      ${HANDY_TIPS.map(t=>`<div class="tip-card">
-        <div class="tip-head">
-          <div class="tip-name">${esc(t.name)}</div>
-          <button class="copy-btn" data-copy="${escAttr(t.formula)}">コピー</button>
-        </div>
-        <div class="tip-formula">${highlightFormula(t.formula)}</div>
-        <div class="tip-desc">${esc(t.desc)}</div>
-        <div class="tip-use">💼 ${esc(t.use)}</div>
-      </div>`).join("")}
+      ${HANDY_TIPS.map(tipCard).join("")}
     </div>
   </div>
   <div class="section-block">
@@ -1332,17 +1350,7 @@ function renderApplied(){
     <h1 class="page-title">★応用編（組み合わせ実例）</h1>
     <div class="page-desc">複数の関数を組み合わせた、実務でよく使う数式パターンの分解解説。</div>
   </div>
-  ${APPLIED.map((a,i)=>`<div class="applied-card">
-    <div class="applied-title"><span class="num">例${i+1}</span>${esc(a.title)}</div>
-    <div class="codeblock">
-      <button class="copy-btn" data-copy="${escAttr(a.formula)}">コピー</button>
-      <div class="formula">${highlightFormula(a.formula)}</div>
-    </div>
-    <div class="applied-desc">${esc(a.desc)}</div>
-    <div class="legend">
-      ${a.legend.map(l=>`<div class="legend-item"><span class="term">${esc(l[0])}</span><span class="exp">${esc(l[1])}</span></div>`).join("")}
-    </div>
-  </div>`).join("")}`;
+  ${APPLIED.map(appliedCard).join("")}`;
 }
 
 function stripPlaceholders(text){
@@ -1521,29 +1529,30 @@ function matchFn(fn, q){
 
 function renderSearchResults(q){
   const results = FUNCTIONS.filter(f=>matchFn(f,q));
-  let extraHits = [];
   const ql = q.toLowerCase();
-  HANDY_TIPS.forEach(t=>{ if((t.name+t.desc+t.use).toLowerCase().includes(ql)) extraHits.push({type:"handy",label:t.name,sub:t.desc}); });
-  APPLIED.forEach((a,i)=>{ if((a.title+a.desc).toLowerCase().includes(ql)) extraHits.push({type:"applied",label:a.title,sub:"応用編 例"+(i+1), idx:i}); });
+  const matchedHandy = HANDY_TIPS.filter(t=>(t.name+t.desc+t.use).toLowerCase().includes(ql));
+  const matchedApplied = [];
+  APPLIED.forEach((a,i)=>{ if((a.title+a.desc).toLowerCase().includes(ql)) matchedApplied.push([a,i]); });
+  const extraCount = matchedHandy.length + matchedApplied.length;
 
-  document.getElementById("searchMeta").textContent = q ? `${results.length + extraHits.length} 件ヒット` : "";
+  document.getElementById("searchMeta").textContent = q ? `${results.length + extraCount} 件ヒット` : "";
 
-  if(!results.length && !extraHits.length){
+  if(!results.length && !extraCount){
     return `<div class="page-head"><div class="eyebrow"><span class="dot"></span>検索結果</div><h1 class="page-title">「${esc(q)}」の検索結果</h1></div>
     <div class="empty-state">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
       <div>一致する関数が見つかりませんでした</div>
     </div>`;
   }
-  const extraHtml = extraHits.length ? `<div class="section-block"><h3><span class="bar"></span>関連する参考資料</h3>
-    <div style="display:flex;flex-direction:column;gap:8px;">
-      ${extraHits.map(h=>`<button type="button" class="navitem" style="background:var(--surface-2);border-color:var(--border);" data-jump="${h.type}" data-idx="${h.idx||0}"><span style="font-weight:700;">${esc(h.label)}</span><span class="cnt" style="margin-left:8px;font-family:inherit;">${esc(h.sub)}</span></button>`).join("")}
-    </div></div>` : "";
+  const extraHtml = extraCount ? `<div class="section-block"><h3><span class="bar"></span>関連する参考資料</h3>
+    ${matchedHandy.length ? `<div class="tip-grid">${matchedHandy.map(tipCard).join("")}</div>` : ""}
+    ${matchedApplied.length ? `<div style="display:flex;flex-direction:column;gap:16px;${matchedHandy.length?"margin-top:16px;":""}">${matchedApplied.map(([a,i])=>appliedCard(a,i)).join("")}</div>` : ""}
+  </div>` : "";
 
   return `<div class="page-head">
     <div class="eyebrow"><span class="dot"></span>検索結果</div>
     <h1 class="page-title">「${esc(q)}」の検索結果</h1>
-    <div class="page-desc">${results.length + extraHits.length} 件見つかりました</div>
+    <div class="page-desc">${results.length + extraCount} 件見つかりました</div>
   </div>
   ${extraHtml}
   <div class="fn-grid">${results.map(fnCard).join("")}</div>`;
@@ -1559,13 +1568,6 @@ function render(){
     content.innerHTML = renderCategory(currentCat);
   }
   bindCopyButtons();
-  content.querySelectorAll("[data-jump]").forEach(el=>{
-    el.addEventListener("click", ()=>{
-      const type = el.dataset.jump;
-      searchQuery=""; document.getElementById("searchInput").value="";
-      setCategory(type);
-    });
-  });
 }
 
 function bindCopyButtons(){
