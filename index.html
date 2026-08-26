@@ -696,6 +696,7 @@ const FUNCTIONS = [
 
 // ---------------- 配列・自動化・外部連携系 ----------------
 {id:"importrange",cat:"array",name:"IMPORTRANGE",sheetsOnly:true,
+ keywords:["インポート","取り込み","読み込み"],
  syntax:'IMPORTRANGE("スプレッドシートのURL or ID", "シート名!範囲")',
  oneliner:"別ファイルのデータを取得",
  formula:`IMPORTRANGE("URL","Sheet1!A:C")`,
@@ -1517,7 +1518,7 @@ function setCategory(cat){
 
 function matchFn(fn, q){
   if(!q) return true;
-  const hay = [fn.name, fn.oneliner, fn.syntax, fn.mechanism, (fn.points||[]).join(" "), (fn.cautions||[]).join(" "), fn.usage&&fn.usage.purpose, (fn.usage&&fn.usage.scenario||[]).join(" ")].join(" ").toLowerCase();
+  const hay = [fn.name, fn.oneliner, fn.syntax, fn.mechanism, (fn.points||[]).join(" "), (fn.cautions||[]).join(" "), fn.usage&&fn.usage.purpose, (fn.usage&&fn.usage.scenario||[]).join(" "), (fn.keywords||[]).join(" ")].join(" ").toLowerCase();
   return hay.includes(q.toLowerCase());
 }
 
