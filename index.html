@@ -706,7 +706,10 @@ const FUNCTIONS = [
  cautions:["大量使用で非常に重くなる","「内部エラー」が出ることがある","なるべく範囲を絞る"],
  usage:{purpose:"別シートからデータ取得",scenario:["複数ファイル統合","拠点管理"],
    merit:["自動連携","一元管理可能"],demerit:["重い","エラーが出やすい（内部エラー等）","初回許可必要"],bigdata:"×（かなり重い）"},
- extra:{title:"対策：必要範囲だけ取得しQUERYと併用",examples:[{formula:`=IMPORTRANGE(A1,"本社!B5:CU110")`,desc:"必要な範囲だけを絞って取得することで負荷を抑える　※A1にURLを入力している場合"}]}},
+ extra:{title:"対策：必要範囲だけ取得しQUERYと併用",examples:[
+   {formula:`=IMPORTRANGE(A1,"本社!B5:CU110")`,desc:"①必要な範囲だけを絞って取得することで負荷を抑える　※A1にURLを入力している場合"},
+   {formula:`=QUERY(IMPORTRANGE(A1,"本社!B5:CU110"),"select Col1, Col3 where Col5='対象'",1)`,desc:"②QUERYと組み合わせ、欲しい列・条件だけに絞り込んで取得する。範囲を絞るだけでなく、取り込んだ後の抽出・集計もQUERY側にまとめて処理できる"},
+ ]}},
 
 {id:"let",cat:"array",name:"LET",sheetsOnly:true,
  syntax:"LET(名前, 値, 処理)",
