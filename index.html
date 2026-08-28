@@ -451,7 +451,7 @@ const FUNCTIONS = [
  usage:{purpose:"条件に合うデータだけ抽出",scenario:["VLOOKUPの代替","柔軟な検索"],
    merit:["列の制約がない（左検索OK）","比較的軽い"],demerit:["式がやや複雑"],bigdata:"◎（安定）"}},
 
-{id:"xlookup",cat:"search",name:"XLOOKUP",sheetsOnly:false,excelNote:"スプレッドシートでは非対応（類似はLOOKUP系、代替はINDEX+MATCHまたはFILTER）",
+{id:"xlookup",cat:"search",name:"XLOOKUP",sheetsOnly:false,
  syntax:"XLOOKUP(検索値, 検索範囲, 戻り範囲)",
  oneliner:"検索して値を取得（検索関数の統合版）",
  formula:`XLOOKUP("田中", A:A, B:B, "")`,
