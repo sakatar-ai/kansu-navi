@@ -4,23 +4,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f5f6f9;
-  --bg-soft:#eceff3;
+  --bg:#f3f5f9;
+  --bg-soft:#eef1f7;
   --surface:#ffffff;
-  --surface-2:#f0f2f6;
-  --border:#dde1e8;
-  --border-strong:#c7cdd7;
-  --ink:#1b222c;
-  --ink-muted:#5b6472;
-  --ink-faint:#8992a0;
-  --accent:#1f6f78;
-  --accent-ink:#0f4a50;
-  --accent-soft:#e3f0f0;
-  --accent-soft-strong:#cbe4e3;
-  --code-bg:#f7f8fb;
-  --code-border:#e1e5ec;
+  --surface-2:#eef1f6;
+  --border:#e3e7ee;
+  --border-strong:#c7cfdc;
+  --ink:#202124;
+  --ink-muted:#5f6368;
+  --ink-faint:#8c919a;
+  --accent:#3b6ea5;
+  --accent-ink:#2b5480;
+  --accent-soft:#e7eef6;
+  --accent-soft-strong:#cddced;
+  --code-bg:#f6f8fb;
+  --code-border:#e1e6ef;
   --code-fn:#a8571e;
-  --code-ref:#2f6fa5;
+  --code-ref:#3b6ea5;
   --code-str:#3e7d4b;
   --code-num:#7a4fa0;
   --code-punc:#8992a0;
@@ -36,27 +36,27 @@
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#11151b;
-    --bg-soft:#171c23;
-    --surface:#1a2028;
-    --surface-2:#212832;
-    --border:#2c3440;
-    --border-strong:#3a4451;
-    --ink:#e7eaef;
-    --ink-muted:#a3adba;
-    --ink-faint:#6c7684;
-    --accent:#59bcc4;
-    --accent-ink:#bfeef0;
-    --accent-soft:#173539;
-    --accent-soft-strong:#1f4548;
-    --code-bg:#161b22;
-    --code-border:#2a323d;
+    --bg:#131f3f;
+    --bg-soft:#182747;
+    --surface:#1c2b4a;
+    --surface-2:#233257;
+    --border:#2d3f66;
+    --border-strong:#3d5280;
+    --ink:#eef1f6;
+    --ink-muted:#a9b4c9;
+    --ink-faint:#75839f;
+    --accent:#6fa3d6;
+    --accent-ink:#c7ddf2;
+    --accent-soft:#1f3a5c;
+    --accent-soft-strong:#2a4b74;
+    --code-bg:#152441;
+    --code-border:#2a3d63;
     --code-fn:#e0a868;
-    --code-ref:#7fb0e0;
+    --code-ref:#8fc0f0;
     --code-str:#8fcb9b;
     --code-num:#b79ce0;
-    --code-punc:#788191;
-    --tag-sheets-bg:#2a2338;
+    --code-punc:#7f8bab;
+    --tag-sheets-bg:#2a2350;
     --tag-sheets-ink:#c4aeee;
     --tag-excel-bg:#1d2c22;
     --tag-excel-ink:#7fce97;
@@ -67,27 +67,27 @@
   }
 }
 :root[data-theme="dark"]{
-  --bg:#11151b;
-  --bg-soft:#171c23;
-  --surface:#1a2028;
-  --surface-2:#212832;
-  --border:#2c3440;
-  --border-strong:#3a4451;
-  --ink:#e7eaef;
-  --ink-muted:#a3adba;
-  --ink-faint:#6c7684;
-  --accent:#59bcc4;
-  --accent-ink:#bfeef0;
-  --accent-soft:#173539;
-  --accent-soft-strong:#1f4548;
-  --code-bg:#161b22;
-  --code-border:#2a323d;
+  --bg:#131f3f;
+  --bg-soft:#182747;
+  --surface:#1c2b4a;
+  --surface-2:#233257;
+  --border:#2d3f66;
+  --border-strong:#3d5280;
+  --ink:#eef1f6;
+  --ink-muted:#a9b4c9;
+  --ink-faint:#75839f;
+  --accent:#6fa3d6;
+  --accent-ink:#c7ddf2;
+  --accent-soft:#1f3a5c;
+  --accent-soft-strong:#2a4b74;
+  --code-bg:#152441;
+  --code-border:#2a3d63;
   --code-fn:#e0a868;
-  --code-ref:#7fb0e0;
+  --code-ref:#8fc0f0;
   --code-str:#8fcb9b;
   --code-num:#b79ce0;
-  --code-punc:#788191;
-  --tag-sheets-bg:#2a2338;
+  --code-punc:#7f8bab;
+  --tag-sheets-bg:#2a2350;
   --tag-sheets-ink:#c4aeee;
   --tag-excel-bg:#1d2c22;
   --tag-excel-ink:#7fce97;
@@ -1024,7 +1024,6 @@ const COMMANDS = [
  {name:"システムファイルの破損チェック・修復（DISM & SFC）",cmd:["dism /online /cleanup-image /restorehealth","sfc /scannow"],effect:"OSの不具合や速度低下の原因となるシステム破損を治す。コマンド2（sfc /scannow）だけでもOK。",note:"管理者権限で実行"},
  {name:"ディスククリーンアップ（自動）",cmd:"cleanmgr",effect:"一時ファイルやゴミ箱の不要データを自動で一括削除。"},
  {name:"DNSキャッシュのクリア",cmd:"ipconfig /flushdns",effect:"ネット接続の不安定さを解消。"},
- {name:"CPU・メモリの状態を確認",cmd:`$c=Get-Counter '\\Processor(_Total)\\% Processor Time','\\Memory\\% Committed Bytes In Use','\\PhysicalDisk(_Total)\\% Disk Time';"CPU: {0}% / メモリ: {1}% / ディスク: {2}%" -f [math]::Round($c.CounterSamples[0].CookedValue,1),[math]::Round($c.CounterSamples[1].CookedValue,1),[math]::Round($c.CounterSamples[2].CookedValue,1)`,effect:"CPU・メモリ・ディスクの使用率を確認（PowerShell）。"},
  {name:"ディスクのエラーを確認",cmd:"chkdsk C: /scan",effect:"Windowsを起動したまま、Cドライブのエラーを確認。"},
 ];
 const COMMAND_STEPS = ["🔍検索でCMDと入力","「管理者として実行」をクリック","ポップアップが表示されたら「はい」をクリック","コマンドを入力"];
