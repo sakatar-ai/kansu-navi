@@ -1082,7 +1082,7 @@ const GUIDE_ERRORS = [
 // AIに関数を質問する時の例文（｛…｝が入力箇所）
 const AI_PROMPT_TEMPLATES = [
  {title:"関数を教えてもらう時のテンプレート",
-  body:`あなたは｛スプレッドシート or Excel｝の専門家です。
+  body:`あなたは｛Googleスプレッドシート／Excel｝（バージョン：｛Excelの人だけ｝）の専門家です。
 下記関数について教えてください。
 
 ＜データについて＞
@@ -1375,6 +1375,18 @@ function renderAiPrompt(){
       <div class="prompt-text">${renderPromptBody(t.body)}</div>
     </div>
   </div>`).join("")}
+  <div class="callout" style="margin-bottom:18px;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></svg>
+    <div><b>Excelのバージョンの確かめ方</b><br>Excelはバージョンによって使える関数が違います（例：XLOOKUP・FILTERは古いExcelでは使えません）。Excelを使う人は、例文の「バージョン：」の所に書いておくと、使えない関数が返ってくるのを防げます。Googleスプレッドシートの人は書かなくて大丈夫です。
+      <ol style="margin:8px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:2px;">
+        <li>Excelを開き、左上の「ファイル」をクリック</li>
+        <li>左下の「アカウント」をクリック（見当たらない時は「その他…」の中にあります）</li>
+        <li>右側の「製品情報」に出ている名前を書く（例：「Microsoft 365」「Office 2021」「Office 2016」）</li>
+      </ol>
+      <div style="margin-top:6px;">Macの場合：画面上のメニュー「Excel」→「Microsoft Excel について」で確かめられます。</div>
+    </div>
+  </div>
+
   <div class="callout">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17v.01M12 8v5M12 3l9 16H3z"/></svg>
     <div>コピーした文章をAIに貼り付けたら、空になった｛｝の部分をクリックして自分のデータに合わせて書き込んでから送信してください。「＜条件＞」の項目は、必要な分だけ増やしたり減らしたりしても構いません。</div>
